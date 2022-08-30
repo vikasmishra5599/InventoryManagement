@@ -13,4 +13,7 @@ public class ProductRequest {
     private String type;
     private String serialNumber;
     private String addedBy;
+    private String status;
+    private String trackingId;
+    private String assignedTo;
 }

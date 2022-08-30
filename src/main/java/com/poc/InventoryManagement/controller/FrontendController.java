@@ -16,7 +16,7 @@ public class FrontendController {
         this.frontendService = frontendService;
     }
 
-    @GetMapping(value = {"/", ""}, produces = TEXT_HTML_VALUE)
+    @GetMapping(value = {"/", "/list", "/contact", "/{path:[^\\.]*}"}, produces = TEXT_HTML_VALUE)
     public String fetchLayout() {
       return frontendService.fetchLayout();
     }

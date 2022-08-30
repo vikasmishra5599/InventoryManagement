@@ -6,8 +6,6 @@ import axios from 'axios';
 
 
 const EmployeeRegistration = () => {
-    const classes = useStyles();
-    const [showError, setShowError] = useState(false);
     const initialForm = {
         name: "",
         empId: "",
@@ -19,43 +17,54 @@ const EmployeeRegistration = () => {
     }
 
     const [empForm, setEmpForm] = useState(initialForm);
+    const [showError, setShowError] = useState(false);
+    const classes = useStyles();
 
     const handleInputChange = (e) => {
-        const fieldName= e.target.name
+        setShowError(false)
+        const fieldName = e.target.name
         const fieldValue = e.target.value
 
         setEmpForm({
                 ...empForm,
-            [fieldName]: fieldValue
+                [fieldName]: fieldValue
             }
         );
-       console.log(empForm)
+    }
+
+    const handleResetButton = () => {
+        setEmpForm(initialForm);
+        setShowError(false)
+    }
+
+    const handleManagerAccess = (e) => {
+        setEmpForm({
+                ...empForm,
+                manager: e.target.checked
+            }
+        );
     }
 
     const handleUserRegistration = (e) => {
         e.preventDefault();
-        console.log("Before",empForm);
-        const inputRequest= JSON.stringify(empForm)
-
-        console.log(inputRequest);
+        const inputRequest = JSON.stringify(empForm)
 
         axios({
-
-            // Endpoint to send files
-            url: "/ims/user/create",
+            url: "/ims/employee/create",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
             },
-            // Attaching the form data
-            data:inputRequest ,
+            data: inputRequest,
         })
-
-            // Handle the response from backend here
-            .then((res) => { console.log("sucesss") })
-
-            // Catch errors if any
-            .catch((err) => {  console.log("failure")});
+            .then((res) => {
+                setShowError(false)
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err)
+                setShowError(true)
+            });
 
     };
 
@@ -71,12 +80,12 @@ const EmployeeRegistration = () => {
                     <Input name="name" aria-describedby="name" onChange={handleInputChange}/>
                 </FormControl>
 
-                <FormControl  margin="normal" fullWidth>
+                <FormControl margin="normal" fullWidth>
                     <InputLabel htmlFor="empId">Employee Id</InputLabel>
                     <Input name="empId" aria-describedby="empId" onChange={handleInputChange}/>
                 </FormControl>
 
-                <FormControl  fullWidth>
+                <FormControl fullWidth>
                     <InputLabel htmlFor="emailId">Email Id</InputLabel>
                     <Input name="emailId" aria-describedby="emailId"
                            onChange={handleInputChange}/>
@@ -101,7 +110,8 @@ const EmployeeRegistration = () => {
                 </FormControl>
 
                 <FormControl fullWidth margin="normal">
-                    <FormControlLabel name="manager" control={<Checkbox/>} label="Is Manager"/>
+                    <FormControlLabel name="manager" control={<Checkbox/>} label="Is Manager"
+                                      onChange={handleManagerAccess}/>
                 </FormControl>
 
                 <Button variant="contained" type="submit" color="primary">
@@ -109,11 +119,10 @@ const EmployeeRegistration = () => {
                 </Button>
 
             </form>
-            <Button href="#" variant="contained" type="submit" color="primary">
+            <br/>
+            <Button variant="contained" type="submit" color="primary"  onChange={handleResetButton}>
                 Reset
             </Button>
-            <br/>
-
         </>
     );
 }

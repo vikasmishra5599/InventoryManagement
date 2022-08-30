@@ -7,9 +7,9 @@ const Footer = () => {
 
   return (
     <footer className={classes.footer}>
-      <Typography variant="h6" className={classes.title}>
+    {/*  <Typography variant="h6" className={classes.title}>
           @2022
-      </Typography>
+      </Typography>*/}
     </footer>
   );
 };

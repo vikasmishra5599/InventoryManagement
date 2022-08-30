@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/employee")
+public class EmployeeController {
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public EmployeeController(UserService userService) {
         this.userService = userService;
     }
 
@@ -26,12 +26,6 @@ public class UserController {
     @GetMapping("/getAll")
     public List<User> getAll() {
        return userService.getAllUsers();
-    }
-
-
-    @GetMapping("/")
-    public String testApp() {
-        return "testing purpose";
     }
 
 }

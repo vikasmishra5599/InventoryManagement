@@ -1,7 +1,7 @@
 import React from "react";
 
 const ProductAssignment = () => {
-    return <>Product Assignment</>
+    return <h3>Product Assignment</h3>
 }
 
 export default ProductAssignment;

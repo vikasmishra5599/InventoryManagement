@@ -1,7 +1,7 @@
 import React from "react";
 
 const Audit = () => {
-    return <> This is an Audit page</>
+    return <h3> Audit page</h3>
 }
 
 export default Audit;

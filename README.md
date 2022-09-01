@@ -27,6 +27,16 @@ mvn spring-boot:run
 Go to browser, [http://localhost:8081/ims/](http://localhost:8081/ims/)
 
 
+## Run (Inside DOCKER container locally)
+
+### Build
+
+`docker build . --tag ims-app:1.0`
+
+### Run
+
+`docker run -p 8081:8081 ims-app:1.0`
+
 
 ### Database
 
@@ -53,9 +63,6 @@ Process 1:  In this we created app service in azure and then maven deploy to tha
 `mvn package azure-webapp:deploy`
 
 Refer : [https://docs.microsoft.com/en-us/azure/app-service/quickstart-java?tabs=tomcat&pivots=platform-linux-development-environment-maven](https://docs.microsoft.com/en-us/azure/app-service/quickstart-java?tabs=tomcat&pivots=platform-linux-development-environment-maven)
-
-
-
 
 
 

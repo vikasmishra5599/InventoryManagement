@@ -33,3 +33,31 @@ Go to browser, [http://localhost:8081/ims/](http://localhost:8081/ims/)
 H2: http://localhost:8081/ims/h2/
 
 username and password from config file
+
+
+
+## Azure
+
+### Database
+
+For postgres, we used Azure SQL for Postgresql service. We created instance of service within Azure portal manually. 
+Now using host, username, password, and default database postgres(we can create our own database manually). We are hitting 
+postgres by making changes in application.properties. We can view table by hitting endpoint in postgres utility software
+on our system. View functionality not available on azure portal.
+
+
+### Deploy
+
+Process 1:  In this we created app service in azure and then maven deploy to that resource
+
+`mvn package azure-webapp:deploy`
+
+Refer : [https://docs.microsoft.com/en-us/azure/app-service/quickstart-java?tabs=tomcat&pivots=platform-linux-development-environment-maven](https://docs.microsoft.com/en-us/azure/app-service/quickstart-java?tabs=tomcat&pivots=platform-linux-development-environment-maven)
+
+
+
+
+
+
+
+

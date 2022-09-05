@@ -37,6 +37,9 @@ Go to browser, [http://localhost:8081/ims/](http://localhost:8081/ims/)
 
 `docker run -p 8081:8081 ims-app:1.0`
 
+#### Other useful command
+
+docker image ls
 
 ### Database
 
@@ -72,3 +75,4 @@ Note: Added for testing pipeline
 
 
 
+https://medium.com/google-cloud/kubernetes-101-pods-nodes-containers-and-clusters-c1509e409e16

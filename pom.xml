@@ -79,39 +79,39 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>exec-maven-plugin</artifactId>
-				<groupId>org.codehaus.mojo</groupId>
-				<version>3.0.0</version>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.12.1</version>
+				<configuration>
+					<workingDirectory>${basedir}/frontend</workingDirectory>
+				</configuration>
 				<executions>
 					<execution>
-						<id>yarn install</id>
-						<phase>generate-sources</phase>
+						<id>install-node-and-npm</id>
 						<goals>
-							<goal>exec</goal>
+							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
-							<executable>yarn</executable>
-							<workingDirectory>${basedir}/frontend</workingDirectory>
-							<environmentVariables>
-								<no_proxy>ci.bd.bring.no</no_proxy>
-							</environmentVariables>
-							<arguments>
-								<argument>install</argument>
-							</arguments>
+							<nodeVersion>v17.0.1</nodeVersion>
+							<npmVersion>8.1.0</npmVersion>
 						</configuration>
 					</execution>
 					<execution>
-						<id>yarn build</id>
-						<phase>generate-sources</phase>
+						<id>npm-install</id>
 						<goals>
-							<goal>exec</goal>
+							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<executable>yarn</executable>
-							<workingDirectory>${basedir}/frontend</workingDirectory>
-							<arguments>
-								<argument>build</argument>
-							</arguments>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-build</id>
+						<goals>
+							<goal>npm </goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
 						</configuration>
 					</execution>
 				</executions>
@@ -128,7 +128,7 @@
 						<configuration>
 							<filesets>
 								<fileset>
-									<directory>${basedir}/src/main/resources/static</directory>
+									<directory>${basedir}/src/main/resources/static/static</directory>
 								</fileset>
 							</filesets>
 						</configuration>
@@ -146,10 +146,10 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/src/main/resources/static</outputDirectory>
+							<outputDirectory>${basedir}/src/main/resources/static/static</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${basedir}/frontend/build</directory>
+									<directory>${basedir}/frontend/build/static</directory>
 								</resource>
 							</resources>
 						</configuration>
@@ -185,7 +185,5 @@
             </configuration>
           </plugin>
 		</plugins>
-
 	</build>
-
 </project>

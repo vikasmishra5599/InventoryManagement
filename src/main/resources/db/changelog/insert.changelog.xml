@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+   <changeSet author="ssubramaniam (generated)" id="1662534267106-1">
+        <insert tableName="auth_user">
+            <column name="password" value="$2a$05$LMUUEHdI1g2lUyjH.pQoDOSsxW6zag8xjWqIjHikMboanUu5Got4C"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="email" value="inventtadmin@allegion.com"/>
+            <column name="email_id"/>
+            <column name="first_name" value="admin"/>
+            <column name="incorrect_attempts" valueNumeric="0"/>
+            <column name="is_reg_link_active" valueBoolean="true"/>
+            <column name="last_name" value="Lname"/>
+            <column name="phone_no" value="+91000011"/>
+            <column name="reg_key"/>
+            <column name="reg_link_expiry"/>
+            <column name="reset_password_expiry"/>
+            <column name="reset_password_key"/>
+        </insert>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662534267106-2">
+        <insert tableName="role">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="ROLE_MANAGER"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="ROLE_USER"/>
+        </insert>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662534267106-3">
+        <insert tableName="auth_user_roles">
+            <column name="users_id" valueNumeric="1"/>
+            <column name="roles_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="auth_user_roles">
+            <column name="users_id" valueNumeric="1"/>
+            <column name="roles_id" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

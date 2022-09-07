@@ -1,0 +1,161 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+<changeSet author="ssubramaniam (generated)" id="1662532657579-1">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="INTEGER" >
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="empid" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="emailid" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contactno" type="VARCHAR(32)"/>
+            <column name="teamname" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="supervisorname" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ismanager" type="BOOLEAN"/>
+            <column name="createdtime" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-2">
+        <createTable tableName="products">
+            <column autoIncrement="true" name="id" type="serial">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="products_pkey" />
+            </column>
+            <column name="name" type="VARCHAR(80)"/>
+            <column name="description" type="VARCHAR(150)"/>
+            <column name="type" type="VARCHAR(80)"/>
+            <column name="serialnumber" type="VARCHAR(80)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="addedtime" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="addedBy" type="VARCHAR(80)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-3">
+        <createTable tableName="auth_user">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="auth_user_pkey" />
+            </column>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="email_id" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="incorrect_attempts" type="INTEGER"/>
+            <column name="is_reg_link_active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="phone_no" type="VARCHAR(255)"/>
+            <column name="reg_key" type="VARCHAR(255)"/>
+            <column name="reg_link_expiry" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="reset_password_expiry" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="reset_password_key" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-5">
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_pkey" />
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-6">
+        <createTable tableName="team">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="team_pkey" />
+            </column>
+            <column name="last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_updated_by_id" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="team_description" type="VARCHAR(255)"/>
+            <column name="team_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-7">
+        <addUniqueConstraint columnNames="emailid" constraintName="users_emailid_key" tableName="users"/>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-8">
+        <addUniqueConstraint columnNames="empid" constraintName="users_empid_key" tableName="users"/>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-9">
+        <createIndex indexName="products_name_idx" tableName="products">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-10">
+        <addUniqueConstraint columnNames="serialnumber" constraintName="products_serialnumber_key" tableName="products"/>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-11">
+        <createTable tableName="auth_user_roles">
+            <column name="users_id" type="BIGINT" >
+                <constraints nullable="false" primaryKey="true" primaryKeyName="auth_user_roles_pkey" />
+            </column>
+            <column name="roles_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="auth_user_roles_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-12">
+        <createTable tableName="productassignment">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="productassignment_pkey" />
+            </column>
+            <column autoIncrement="true" name="productid" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="userid" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="addedtime" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-13">
+        <createTable tableName="productstatus">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="productstatus_pkey" />
+            </column>
+            <column autoIncrement="true" name="productid" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(60)"/>
+            <column name="location" type="VARCHAR(60)"/>
+            <column name="comment" type="VARCHAR(60)"/>
+            <column name="lastupdatedtime" type="VARCHAR(60)"/>
+            <column name="lastupdatetime" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-14">
+        <addForeignKeyConstraint baseColumnNames="productid" baseTableName="productassignment" constraintName="fk_productassign_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="products" validate="true"/>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-15">
+        <addForeignKeyConstraint baseColumnNames="userid" baseTableName="productassignment" constraintName="fk_productassign_userid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-16">
+        <addForeignKeyConstraint baseColumnNames="productid" baseTableName="productstatus" constraintName="fk_productstatsu_productid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="products" validate="true"/>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-17">
+        <addForeignKeyConstraint baseColumnNames="roles_id" baseTableName="auth_user_roles" constraintName="fkqf0secfvbstq7pdc79ht95rfq" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role" validate="true"/>
+    </changeSet>
+    <changeSet author="ssubramaniam (generated)" id="1662532657579-18">
+        <addForeignKeyConstraint baseColumnNames="users_id" baseTableName="auth_user_roles" constraintName="fkql7npvc7iq6ocdnp2eecllm4o" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auth_user" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

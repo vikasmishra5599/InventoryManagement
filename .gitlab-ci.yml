@@ -54,7 +54,7 @@ deploy-image:
     - echo "Deploying application..."
     - az
     - az login --service-principal -u b27121f0-8d8b-4799-bd52-c792ffcaf2d8 -p .a38Q~jME52A~c~wmixd8xBf-Z5xgqyAr-cq8aDs --tenant 9d7e183d-ddb2-438b-a6da-4b92eb265c57
-    - az status
+    - az account show
     - az acr create -n myinventorycontainerregistry --source registry.gitlab.com/internal_team/inventorymanagement:latest --image inventorymanagement:v1
     - successfully logged in
 

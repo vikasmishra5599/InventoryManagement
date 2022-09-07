@@ -1,22 +1,18 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 
 import ImsApp from './ImsApp';
 import reportWebVitals from './reportWebVitals';
-import {BrowserRouter} from 'react-router-dom';
-import * as ReactDOM from "react-dom";
-import {store} from "./redux/store";
+import {AppProvider} from "./component/AppProvider";
+import {createRoot} from 'react-dom/client';
 
 const container = document.getElementById('root');
-
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-        <BrowserRouter basename="/ims">
-            <ImsApp />
-        </BrowserRouter>
-    </Provider>
-  </React.StrictMode>, container
+const root = createRoot(container);
+root.render(
+    <React.StrictMode>
+        <AppProvider>
+            <ImsApp/>
+        </AppProvider>
+    </React.StrictMode>
 );
 
 

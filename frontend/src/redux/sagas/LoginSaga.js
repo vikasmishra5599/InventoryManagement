@@ -5,7 +5,7 @@ import * as LoginRequest from "../../Utils/DAO/LoginRequest";
 import {deleteToken, saveToken} from "../../Utils/TokenUtils";
 import {isEmpty} from "lodash";
 import {enqueueAPPSnackbar} from "../../Utils/SnackbarUtils";
-import {push} from "connected-react-router";
+import {history} from "../../configureStore"
 
 export const loginRequestWatcher=function*(){
     yield takeLatest(actionTypes.LOGIN, loginRequest);
@@ -18,7 +18,6 @@ function* loginRequest(action){
         if (!isEmpty(response.data && response.data.jwt )){
             if (response.data.jwt){
                 saveToken(response.data.jwt,response);
-               // yield put (loginSuccess());
                 yield put(saveProfile({user: response.data.username, roles: response.data.authorities}));
             }
         }
@@ -34,7 +33,7 @@ export const logoffRequestWatcher=function*(){
 function* logoffRequest(){
     deleteToken();
     yield put (enqueueSnackbar (enqueueAPPSnackbar('Logged off successfully !!', 'success')));
-    yield put (push('/'))
+    yield put (history.push('/'))
 }
 
 export const saveResetPasswordWatcher = function* () {
@@ -46,7 +45,7 @@ function* saveResetPassword(action) {
         const response = yield call(LoginRequest.saveResetPassword, action.payload);
         if (!isEmpty(response.data)) {
             yield put(enqueueSnackbar(enqueueAPPSnackbar(response.data.message, 'success')));
-            yield put(push('/'));
+            yield put(history.push('/'));
         }
     } catch (error) {
         yield put(enqueueSnackbar(enqueueAPPSnackbar('Save Reset password Error -' + error?.response?.data?.message ? error?.response?.data?.message: '!', 'error')));

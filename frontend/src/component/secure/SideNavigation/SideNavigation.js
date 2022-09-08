@@ -15,11 +15,8 @@ import {connect} from "react-redux";
 import Button from "@mui/material/Button";
 import {sideNavigation} from "../../../Constants/SideNavigation/SideNaviagation";
 import AppBar from "../Appbar/Appbar";
-import { Switch, withRouter} from "react-router-dom";
-import {Route} from "react-router-dom";
-import {push} from "connected-react-router";
+import {Switch, Route, useHistory} from "react-router-dom";
 import {useState} from "react";
-import SideNavigation from "../../../redux/reducers/SideNavigation";
 import Products from "../Products/Products";
 import TeamsTable from "../Teams/TeamsTable/TeamsTable";
 import UsersTableContainer from "../Users/UsersTable/UsersTableContainer";
@@ -78,8 +75,9 @@ function SideNav(props) {
     const {
         isOpen,
         sideNavDrawerToggle,
-        push
     } = props;
+
+    const history = useHistory();
 
     const [pathToggle, setPathToggle] = useState(false);
 
@@ -89,7 +87,7 @@ function SideNav(props) {
 
     function routerPush(path) {
         setPathToggle(!pathToggle);
-        push(path);
+        history.push(path);
     }
 
     return (
@@ -100,7 +98,8 @@ function SideNav(props) {
                 <Divider/>
                 <List>
                     {sideNavigation.map((menu, index) => (
-                        <ListItem key={index} disablePadding sx={{display: 'block'}} onClick={() => routerPush(menu.path)}>
+                        <ListItem key={index} disablePadding sx={{display: 'block'}}
+                                  onClick={() => routerPush(menu.path)}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -128,12 +127,11 @@ function SideNav(props) {
                 </Button>
             </Drawer>
             <div>
-                <DrawerHeader/>
                 {/*<BreadCrumb/>*/}
-                <Switch>
-                    <Route key={"1"} id={`id-router-2`} exact path={"/users"} component={UsersTableContainer}/>
-                    <Route key={"2"} id={`id-router-2`} exact path={"/teams"} component={TeamsTable}/>
-                    <Route key={"3"} id={`id-router-2`} exact path={"/home"} component={Products}/>
+                <Switch >
+                    <Route exact path="/">  <UsersTableContainer/> </Route>
+                    <Route exact path="/teams">  <TeamsTable/> </Route>
+                    <Route exact path="/products">  <Products/> </Route>
                 </Switch>
             </div>
         </Box>
@@ -145,8 +143,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = {
-    push,
     sideNavDrawerToggle
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SideNav));
+export default connect(mapStateToProps, mapDispatchToProps)(SideNav);

@@ -1,13 +1,15 @@
 import {Button, Card, CardContent, CardHeader, Grid, Link, TextField} from "@mui/material";
 import {useState} from "react";
 import * as _ from "lodash";
+import {useHistory} from "react-router-dom";
 
 function LoginCard(props) {
 
     const {
         login,
-        push
     } = props;
+
+    let history = useHistory();
 
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
@@ -49,7 +51,7 @@ function LoginCard(props) {
     }
 
     function onForgotPasswordLinkClick() {
-        push('/forgotpassword');
+        history.push('/forgotpassword');
     }
 
     return (<Grid

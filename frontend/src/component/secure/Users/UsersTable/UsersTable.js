@@ -168,7 +168,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { numSelected } = props;
+    const { numSelected , title } = props;
 
     return (
         <Toolbar
@@ -197,7 +197,7 @@ const EnhancedTableToolbar = (props) => {
                     id="tableTitle"
                     component="div"
                 >
-                    Nutrition
+                    {title}
                 </Typography>
             )}
 
@@ -222,7 +222,13 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
-export default function UsersTable() {
+export default function UsersTable(props) {
+    const {
+       data,
+        title,
+    }=props;
+
+    console.log(` PROPS ++> `, props);
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected, setSelected] = React.useState([]);
@@ -284,10 +290,11 @@ export default function UsersTable() {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+    console.log(' Rows ', rows);
     return (
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <EnhancedTableToolbar numSelected={selected.length} title={title}/>
                 <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}

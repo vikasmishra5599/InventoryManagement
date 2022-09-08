@@ -73,7 +73,7 @@ function UserAvatar(props) {
                 onClick={handleMenu}
                 color="inherit"
             >
-                {profile.firstName+profile.email  ? <Avatar {...stringAvatar(profile.user + profile.firstName + ' ' + profile.lastName)} />:<Avatar />}
+                {profile.firstName+profile.email  ? <Avatar {...stringAvatar( profile.firstname + ' ' + profile.lastName)} />:<Avatar />}
             </IconButton>
             <Menu
                 id="menu-appbar"

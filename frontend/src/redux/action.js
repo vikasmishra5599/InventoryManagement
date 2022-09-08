@@ -1,5 +1,4 @@
 import * as actionTypes from "./actionTypes";
-import {RESET_PASSWORD, SAVE_PROFILE, SAVE_RESET_PASSWORD} from "./actionTypes";
 
 export const addEmployee = () => ({
     type: actionTypes.ADD_EMPLOYEE,
@@ -66,4 +65,13 @@ export const forgotPassword = (payload) =>({
     payload: payload,
 })
 
+export const deActivateUser =(payload) =>({
+    type:actionTypes.DELETE_USER,
+    payload:payload,
+})
+
+export const editUser =(payload) =>({
+    type:actionTypes.EDIT_USER,
+    payload:payload,
+})
 

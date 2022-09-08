@@ -1,14 +1,13 @@
 import { applyMiddleware, legacy_createStore as createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { createBrowserHistory } from 'history';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { routerMiddleware } from 'connected-react-router';
 import rootSaga from './redux/sagas/sagas';
 import { createRootReducer } from './redux/reducers';
 import {LOGOFF} from "./redux/actionTypes";
+import createHistory from 'history/createBrowserHistory';
 
+export const history = createHistory();
 const sagaMiddleware = createSagaMiddleware();
-export const history = createBrowserHistory();
 
 const resetEnhancer = rootReducer => (state, action) => {
     if (action.type !== LOGOFF) return rootReducer(state, action);
@@ -20,7 +19,7 @@ const resetEnhancer = rootReducer => (state, action) => {
 
 export default function configureStore(initialState){
 
-    const middlewares = [sagaMiddleware, routerMiddleware(history)];
+    const middlewares = [sagaMiddleware];
     const middlewareEnhancer = applyMiddleware(...middlewares);
 
     const composeEnhancers = composeWithDevTools({
@@ -28,7 +27,7 @@ export default function configureStore(initialState){
         traceLimit: 25
     });
 
-    const appReducers = resetEnhancer(createRootReducer(history));
+    const appReducers = resetEnhancer(createRootReducer());
     const store = createStore(
         appReducers,
         initialState,

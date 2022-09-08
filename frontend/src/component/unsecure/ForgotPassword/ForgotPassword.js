@@ -2,13 +2,15 @@ import {Button, Card, CardContent, CardHeader, Grid, Link, TextField} from "@mui
 import {useState} from "react";
 import {isEmpty} from "lodash";
 import {checkValidEmail} from "../../../Utils/Validation/Validation";
+import {useHistory} from "react-router-dom";
 
 
 function ForgotPasswordCard(props) {
 
+    const history = useHistory();
+
     const {
         forgotPassword,
-        push
     } = props;
 
     const [email, setEmail] = useState("");
@@ -43,7 +45,7 @@ function ForgotPasswordCard(props) {
     };
 
     function onBackToLoginClick(){
-        push("/");
+        history.push("/");
     };
 
     return (<Grid

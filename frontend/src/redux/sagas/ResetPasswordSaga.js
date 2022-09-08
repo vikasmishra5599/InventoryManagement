@@ -4,8 +4,7 @@ import * as LoginRequest from "../../Utils/DAO/LoginRequest";
 import {isEmpty} from "lodash";
 import {enqueueSnackbar} from "../action";
 import {enqueueAPPSnackbar} from "../../Utils/SnackbarUtils";
-import {push} from "connected-react-router";
-import {forgotPassword} from "../../Utils/DAO/LoginRequest";
+import {history} from "../../configureStore"
 
 export const forgotPassworsRequestWatcher=function*(){
     yield takeLatest(actionTypes.RESET_PASSWORD, forgotPasswordRequest);
@@ -16,7 +15,7 @@ function* forgotPasswordRequest(action){
         const response = yield call(LoginRequest.forgotPassword, action.payload);
         if (!isEmpty(response.data)) {
             yield put(enqueueSnackbar(enqueueAPPSnackbar(response.message, 'success')));
-            yield put(push('/'));
+            yield put(history.push('/'));
         }
     } catch (error) {
         yield put(enqueueSnackbar(enqueueAPPSnackbar(`Reset password Error ${error?.response?.data?.message}` , 'error')));

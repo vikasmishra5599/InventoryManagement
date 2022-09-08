@@ -13,5 +13,7 @@ export const SAVE_PROFILE = "SAVE_PROFILE";
 export const SAVE_TEAMS = "SAVE_TEAMS";
 export const ADD_TEAMS = "ADD_TEAMS";
 export const SAVE_RESET_PASSWORD = "SAVE_RESET_PASSWORD";
-export const SAVE_USERS="SAVE_USERS"
+export const SAVE_USERS="SAVE_USERS";
+export const DELETE_USER="DELETE_USER";
+export const EDIT_USER="EDIT_USER";
 

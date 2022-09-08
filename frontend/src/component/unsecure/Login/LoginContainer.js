@@ -1,12 +1,10 @@
-import {connect} from "react-redux";
 import {login} from "../../../redux/action";
 import LoginCard from "./LoginCard";
-import {push} from "connected-react-router";
+import {connect} from "react-redux";
 
 
 const mapDispatchToProps={
 login : login,
-    push: push,
 }
 
 export default connect(null,mapDispatchToProps, null)(LoginCard)

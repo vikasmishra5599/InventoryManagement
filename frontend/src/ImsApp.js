@@ -4,18 +4,21 @@ import AppSecure from "./component/secure/AppSecure";
 import {connect} from "react-redux";
 import useNotifier from "./UseNotifier";
 import {getToken} from "./Utils/TokenUtils";
+import {useHistory} from "react-router-dom";
 
 function ImsApp(props) {
 
     const [secure, setSecure]=useState(false);
 
+    const history = useHistory();
     useEffect(()=>{
         if (getToken().length>0) {
             setSecure(true);
+            history.push("/")
         }else{
             setSecure(false);
         }
-    },[getToken(),setSecure])
+    },[getToken(),setSecure,history])
 
     useNotifier();
     return (

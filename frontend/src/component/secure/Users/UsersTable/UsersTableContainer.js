@@ -1,9 +1,39 @@
 import UsersTable from "./UsersTable";
 import {connect} from "react-redux";
+import {Delete, Edit} from "@mui/icons-material";
+import {deActivateUser, editUser} from "../../../../redux/action";
 
 
 const mapStateToProps=(store)=>({
-    users:store.users.users,
+    data:store.Users.users,
+
 })
 
-export default connect(mapStateToProps,null)(UsersTable)
+const mapDisPatchToProps={
+    deActivateUser,
+    editUser,
+}
+
+const mergeProps=(mapStateToProps)=>{
+
+    return({
+        ...mapStateToProps,
+        ...mapDisPatchToProps,
+        defaultSort:"firstName",
+        columns:[],
+        title:"Users",
+        rowActions:[
+            {
+                icon:<Delete/>,
+                onClick: (rowData)=>deActivateUser(rowData),
+            },
+            {
+                icon: <Edit/>,
+                onClick: (rowData)=>editUser(rowData),
+            }
+
+        ]
+    });
+}
+
+export default connect(mapStateToProps,mapDisPatchToProps,mergeProps)(UsersTable);

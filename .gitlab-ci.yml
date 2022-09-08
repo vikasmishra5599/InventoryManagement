@@ -58,7 +58,7 @@ deploy-image:
     - echo $CI_REGISTRY
     - echo "$CI_REGISTRY_USER"
     - az acr import -n myinventorycontainerregistry --source registry.gitlab.com/internal_team/inventorymanagement:latest --image inventorymanagement:v1 --username "$CI_REGISTRY_USER" --password "$CI_REGISTRY_PASSWORD"
-    - successfully logged in
+    - echo "successfully logged in"
 
 #For reference https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Maven.gitlab-ci.yml
 

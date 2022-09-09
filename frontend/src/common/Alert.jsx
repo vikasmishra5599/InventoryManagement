@@ -1,13 +1,17 @@
 import React from 'react';
-import { useStyles } from './Styles';
 
-const Alert = ({ children, alertClass }) => {
-  const classes = useStyles();
+const Alert = ({children}) => {
 
-  return (
-    <div className={`${alertClass ? alertClass : classes.messageError}`} data-testid="alert">
-      {children || 'Something went wrong.'}
-    </div>
-  );
+    return (
+        <div style={{
+            borderLeft: '6px solid #e32d23',
+            borderRadius: '2px',
+            fill: '#eb6761',
+            backgroundColor: '#fdeeed',
+            padding: '1rem',
+        }} data-testid="alert">
+            {children || 'Something went wrong.'}
+        </div>
+    );
 };
 export default Alert;

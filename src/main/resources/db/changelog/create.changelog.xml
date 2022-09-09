@@ -32,17 +32,21 @@
     </changeSet>
     <changeSet author="ssubramaniam (generated)" id="1662532657579-2">
         <createTable tableName="products">
-            <column autoIncrement="true" name="id" type="serial">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="products_pkey" />
+            <column name="id" type="serial" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
             </column>
-            <column name="name" type="VARCHAR(80)"/>
-            <column name="description" type="VARCHAR(150)"/>
-            <column name="type" type="VARCHAR(80)"/>
-            <column name="serialnumber" type="VARCHAR(80)">
-                <constraints nullable="false"/>
+            <column name="name" type="varchar(80)"/>
+            <column name="description" type="varchar(150)"/>
+            <column name="type" type="varchar(80)"/>
+            <column name="serialnumber" type="varchar(80)">
+                <constraints nullable="false" unique="true"/>
             </column>
-            <column name="addedtime" type="TIMESTAMP WITHOUT TIME ZONE"/>
-            <column name="addedBy" type="VARCHAR(80)"/>
+            <column name="location" type="varchar(8)"/>
+            <column name="owner" type="INTEGER"/>
+            <column name="trackingid" type="varchar(50)"/>
+            <column name="status" type="varchar(150)"/>
+            <column name="comments" type="varchar(160)"/>
+            <column name="addedtime" type="datetime"/>
         </createTable>
     </changeSet>
     <changeSet author="ssubramaniam (generated)" id="1662532657579-3">
@@ -117,13 +121,21 @@
             <column autoIncrement="true" name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="productassignment_pkey" />
             </column>
-            <column autoIncrement="true" name="productid" type="INTEGER">
+            <column name="productid" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column autoIncrement="true" name="userid" type="INTEGER">
+            <column name="assignee" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="addedtime" type="TIMESTAMP WITHOUT TIME ZONE">
+            <column name="assignedTo" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comments" type="VARCHAR(150)"> </column>
+            <column name="assignedstarttime" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="assignedendtime" type="datetime"> </column>
+            <column name="lastupdatedtime" type="datetime">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -147,7 +159,7 @@
         <addForeignKeyConstraint baseColumnNames="productid" baseTableName="productassignment" constraintName="fk_productassign_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="products" validate="true"/>
     </changeSet>
     <changeSet author="ssubramaniam (generated)" id="1662532657579-15">
-        <addForeignKeyConstraint baseColumnNames="userid" baseTableName="productassignment" constraintName="fk_productassign_userid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="assignedto" baseTableName="productassignment" constraintName="fk_productassign_userid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auth_user" validate="true"/>
     </changeSet>
     <changeSet author="ssubramaniam (generated)" id="1662532657579-16">
         <addForeignKeyConstraint baseColumnNames="productid" baseTableName="productstatus" constraintName="fk_productstatsu_productid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="products" validate="true"/>

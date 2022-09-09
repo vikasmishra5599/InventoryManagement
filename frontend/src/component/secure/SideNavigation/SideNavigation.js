@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import {styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -15,11 +16,11 @@ import {connect} from "react-redux";
 import Button from "@mui/material/Button";
 import {sideNavigation} from "../../../Constants/SideNavigation/SideNaviagation";
 import AppBar from "../Appbar/Appbar";
-import {Switch, Route, useHistory} from "react-router-dom";
-import {useState} from "react";
-import Products from "../Products/Products";
+import {Route, Switch, useHistory} from "react-router-dom";
 import TeamsTable from "../Teams/TeamsTable/TeamsTable";
 import UsersTableContainer from "../Users/UsersTable/UsersTableContainer";
+import ProductRegistration from "../../ProductRegistration";
+import Dashboard from "../../Dashboard";
 
 const drawerWidth = 180;
 
@@ -128,10 +129,12 @@ function SideNav(props) {
             </Drawer>
             <div>
                 {/*<BreadCrumb/>*/}
-                <Switch >
-                    <Route exact path="/">  <UsersTableContainer/> </Route>
-                    <Route exact path="/teams">  <TeamsTable/> </Route>
-                    <Route exact path="/products">  <Products/> </Route>
+                <Switch>
+                    {/*<Route exact path="/"> <UsersTableContainer/> </Route>*/}
+                    <Route exact path="/teams"> <TeamsTable/> </Route>
+                    <Route exact path="/product"> <ProductRegistration/> </Route>
+                    <Route exact path="/"> <Dashboard/> </Route>
+
                 </Switch>
             </div>
         </Box>

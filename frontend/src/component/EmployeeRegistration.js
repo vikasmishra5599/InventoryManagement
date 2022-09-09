@@ -1,6 +1,5 @@
 import React, {useState} from "react";
-import {Typography, FormControl, FormControlLabel, Input, InputLabel, Button, Checkbox} from '@mui/material';
-import {useStyles} from '../common/Styles';
+import {Button, Checkbox, FormControl, FormControlLabel, Input, InputLabel, Typography} from '@mui/material';
 import Alert from '../common/Alert';
 import axios from 'axios';
 
@@ -18,7 +17,6 @@ const EmployeeRegistration = () => {
 
     const [empForm, setEmpForm] = useState(initialForm);
     const [showError, setShowError] = useState(false);
-    const classes = useStyles();
 
     const handleInputChange = (e) => {
         setShowError(false)
@@ -70,11 +68,14 @@ const EmployeeRegistration = () => {
 
     return (
         <>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" style={{
+                flexGrow: 1,
+                fontWeight: 'bold'
+            }}>
                 Employee Registration
             </Typography>
             {showError && <Alert/>}
-            <form className={classes.form} onSubmit={e => handleUserRegistration(e)}>
+            <form onSubmit={e => handleUserRegistration(e)}>
                 <FormControl required margin="normal" fullWidth>
                     <InputLabel htmlFor="name">Name</InputLabel>
                     <Input name="name" aria-describedby="name" onChange={handleInputChange}/>

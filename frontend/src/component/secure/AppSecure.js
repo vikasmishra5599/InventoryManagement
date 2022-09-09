@@ -27,7 +27,6 @@ function AppSecure(props){
                 <RouteWithLayout exact path="/employee" component={EmployeeRegistration} />
                 <RouteWithLayout exact path="/product" component={ProductRegistration} />
                 <RouteWithLayout exact path="/audit" component={Audit} />
-                <RouteWithLayout exact path="/assignment" component={ProductAssignment} />
                 <RouteWithLayout component={Dashboard} />
             </Switch>*/}
         </div>

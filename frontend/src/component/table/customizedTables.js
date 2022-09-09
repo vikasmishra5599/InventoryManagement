@@ -6,38 +6,57 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {StyledTableCell, StyledTableRow} from "./tablestyle";
+import {Button} from "@mui/material";
+import ProductAssignment from "../ProductAssignment";
 
 const CustomizedTables = (props) => {
-    const {rows} = props
+    const [open, setOpen] = React.useState(false);
+    const [productId, setProductId] = React.useState(null);
+    const {rows} = props;
+
+    const handleClickOpen = (e,id) => {
+        setOpen(true);
+        setProductId(id);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 400 }} aria-label="customized table">
+        <TableContainer style={{"width": "800px"}} component={Paper}>
+            <Table aria-label="customized table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell > Product Id</StyledTableCell>
-                        <StyledTableCell align="right">Product Name</StyledTableCell>
-                        <StyledTableCell align="right">Serial No</StyledTableCell>
-                        <StyledTableCell align="right">Owner</StyledTableCell>
-                        <StyledTableCell align="right">Team Leader</StyledTableCell>
-                        <StyledTableCell align="right">Status</StyledTableCell>
-                        <StyledTableCell align="right">Device Location</StyledTableCell>
+                        <StyledTableCell align="left">Product Name</StyledTableCell>
+                        <StyledTableCell align="left">Serial No</StyledTableCell>
+                        <StyledTableCell align="left">Owner</StyledTableCell>
+                        <StyledTableCell align="left">Description</StyledTableCell>
+                        <StyledTableCell align="left">Type</StyledTableCell>
+                        <StyledTableCell align="left">Comments</StyledTableCell>
+                        <StyledTableCell align="left">Location</StyledTableCell>
+                        <StyledTableCell align="left">Tracking ID</StyledTableCell>
+                        <StyledTableCell align="left">Status</StyledTableCell>
+                        <StyledTableCell align="left">Assign Product</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows && rows.map((row) => (
-                        <StyledTableRow key={row.productId}>
-                            <StyledTableCell component="th" scope="row">
-                                {row.productId}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.productName}</StyledTableCell>
-                            <StyledTableCell align="right">{row.serialNo}</StyledTableCell>
-                            <StyledTableCell align="right">{row.owner}</StyledTableCell>
-                            <StyledTableCell align="right">{row.teamLeader}</StyledTableCell>
-                            <StyledTableCell align="right">{row.status}</StyledTableCell>
-                            <StyledTableCell align="right">{row.location}</StyledTableCell>
+                        <StyledTableRow key={row.id}>
+                            <StyledTableCell align="left">{row.name}</StyledTableCell>
+                            <StyledTableCell align="left">{row.serialNumber}</StyledTableCell>
+                            <StyledTableCell align="left">{row.owner}</StyledTableCell>
+                            <StyledTableCell align="left">{row.description}</StyledTableCell>
+                            <StyledTableCell align="left">{row.type}</StyledTableCell>
+                            <StyledTableCell align="left">{row.comments}</StyledTableCell>
+                            <StyledTableCell align="left">{row.location}</StyledTableCell>
+                            <StyledTableCell align="left">{row.trackingId}</StyledTableCell>
+                            <StyledTableCell align="left">{row.status}</StyledTableCell>
+                            <Button align="left" onClick={event => handleClickOpen(event,row.id)}>Assign</Button>
                         </StyledTableRow>
                     ))}
                 </TableBody>
+                <ProductAssignment  open={open} onClose={handleClose} productId={productId}/>
             </Table>
         </TableContainer>
     );

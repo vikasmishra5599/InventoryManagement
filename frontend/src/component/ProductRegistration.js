@@ -3,6 +3,7 @@ import {Button, FormControl, Input, InputLabel, MenuItem, Select, Typography} fr
 import Alert from '../common/Alert';
 import axios from "axios";
 import Success from "../common/Success";
+import {getAuthHeader} from "../Utils/TokenUtils";
 
 const ProductRegistration = () => {
 
@@ -20,7 +21,7 @@ const ProductRegistration = () => {
     const [showError, setShowError] = useState(false);
     const [productForm, setProductForm] = useState(initialForm);
     const [showSuccess, setShowSuccess] = useState(false);
-
+    const requestHeader = getAuthHeader({'Content-Type': 'application/json'});
     const handleProductRegistration = (e) => {
         e.preventDefault();
         setShowError(false);
@@ -30,9 +31,7 @@ const ProductRegistration = () => {
 
             url: "/ims/product/create",
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: requestHeader,
             data: inputRequest,
         })
             .then((res) => {

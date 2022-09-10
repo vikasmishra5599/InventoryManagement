@@ -13,6 +13,7 @@ import com.poc.InventoryManagement.request.AddUserRequest;
 import com.poc.InventoryManagement.request.UserRequest;
 import com.poc.InventoryManagement.utils.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -65,7 +66,7 @@ public class UserService {
     }
 
     @Transactional
-    public AuthUser addNewUser(AddUserRequest addUserRequest) throws NoSuchAlgorithmException, InvalidInputException {
+    public AuthUserResponse addNewUser(AddUserRequest addUserRequest) throws NoSuchAlgorithmException, InvalidInputException {
 
         if(!checkEmailExists(addUserRequest.email()))
             throw new BadRequestException("User Already Exists!");
@@ -86,7 +87,7 @@ public class UserService {
         authUser.setRoles(roles);
         AuthUser user =authUserRepository.save(authUser);
         emailService.sendRegEmail(addUserRequest.email(), addUserRequest.firstName(), regKey);
-        return user;
+        return authUserMapper(user);
     }
 
     public List<AuthUserResponse> getAllAuthUsers(){
@@ -114,5 +115,10 @@ public class UserService {
 
     public AuthUserResponse getAuthUserByEmail(String email){
         return authUserMapper(authUserRepository.getAuthUserByEmailId(email).get());
+    }
+
+    public AuthUserResponse getAuthUserDetails(){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        return getAuthUserByEmail(name);
     }
 }

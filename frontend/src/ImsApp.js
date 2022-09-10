@@ -12,9 +12,8 @@ function ImsApp(props) {
 
     const history = useHistory();
     useEffect(()=>{
-        if (getToken().length>0) {
+        if (getToken().length >0) {
             setSecure(true);
-            history.push("/")
         }else{
             setSecure(false);
         }
@@ -22,7 +21,7 @@ function ImsApp(props) {
 
     useNotifier();
     return (
-        <div>
+        <div >
             {secure ? <AppSecure/>: <UnSecureView/>}
         </div>
     );

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Dialog, DialogTitle, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {Button, Dialog, DialogTitle, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import axios from "axios";
 import Alert from "../common/Alert";
 import Success from "../common/Success";
@@ -66,13 +66,18 @@ const ProductAssignment = (props) => {
 
     };
     return (
-
+       <div>
         <Dialog onClose={onClose} open={open}>
-            <DialogTitle>Assign a product to someone</DialogTitle>
+            <DialogTitle style={{
+                color: "whitesmoke", backgroundColor: "#1f4fef", display: "flex",
+                justifyContent: "space-between", alignItems: "center"
+            }}>
+                <Typography sx={{fontSize: "1.2rem"}}> Assign a product to someone</Typography>
+            </DialogTitle>
             {showError && <Alert/>}
             {showSuccess && <Success/>}
             <form onSubmit={handleAssignment}>
-                <FormControl fullWidth>
+                <FormControl fullWidth sx={{m: 1}} variant="standard" id="first-name-input-id">
                     <InputLabel id="product-assignment">Select User</InputLabel>
                     <Select
                         labelId="product-assignment-label"
@@ -94,9 +99,9 @@ const ProductAssignment = (props) => {
                         onClick={onClose}>
                     Close
                 </Button>
-
             </form>
         </Dialog>
+       </div>
     );
 };
 

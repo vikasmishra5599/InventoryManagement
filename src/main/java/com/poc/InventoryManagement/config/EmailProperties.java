@@ -14,4 +14,5 @@ import org.springframework.context.annotation.Configuration;
 public class EmailProperties {
     public Boolean enabled;
     public String fromEmail;
+    public String domain;
 }

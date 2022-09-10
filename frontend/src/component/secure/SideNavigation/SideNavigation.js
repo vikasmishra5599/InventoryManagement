@@ -17,10 +17,9 @@ import Button from "@mui/material/Button";
 import {sideNavigation} from "../../../Constants/SideNavigation/SideNaviagation";
 import AppBar from "../Appbar/Appbar";
 import {Route, Switch, useHistory} from "react-router-dom";
-import TeamsTable from "../Teams/TeamsTable/TeamsTable";
-import UsersTableContainer from "../Users/UsersTable/UsersTableContainer";
 import ProductRegistration from "../../ProductRegistration";
-import Dashboard from "../../Dashboard";
+import Users from "../Users/Users";
+import DashboardContainer from "../Dashboard/DashboardContainer";
 
 const drawerWidth = 180;
 
@@ -129,11 +128,10 @@ function SideNav(props) {
             </Drawer>
             <div>
                 {/*<BreadCrumb/>*/}
-                <Switch>
-                    {/*<Route exact path="/"> <UsersTableContainer/> </Route>*/}
-                    <Route exact path="/teams"> <TeamsTable/> </Route>
+                <Switch >
+                    <Route exact path="/"> <DashboardContainer/> </Route>
                     <Route exact path="/product"> <ProductRegistration/> </Route>
-                    <Route exact path="/"> <Dashboard/> </Route>
+                    <Route exact path="/users">  <Users/> </Route>
 
                 </Switch>
             </div>

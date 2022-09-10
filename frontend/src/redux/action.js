@@ -70,8 +70,34 @@ export const deActivateUser =(payload) =>({
     payload:payload,
 })
 
-export const editUser =(payload) =>({
+export const editUser =(user) =>({
     type:actionTypes.EDIT_USER,
-    payload:payload,
+    payload:user,
+})
+
+export const getAllAuthUser =() =>({
+    type:actionTypes.GET_ALL_AUTH_USERS,
+})
+
+export const setAddEditUserDialogOpen =(isOpen,isEdit, user) =>({
+    type:actionTypes.SET_ADD_USER_DIALOG_OPEN,
+    isOpen: isOpen,
+    isEdit: isEdit,
+    user: user
+})
+
+export const saveEditUser=(user)=>({
+    type:actionTypes.SAVE_EDIT_USER,
+    user:user
+})
+
+export const saveRegisterUser=(user)=>({
+    type:actionTypes.SAVE_REGISTER_USER,
+    user:user
+})
+
+export const saveResponseUsers=(payload)=>({
+    type:actionTypes.SAVE_USERS,
+    payload:payload
 })
 

@@ -1,23 +1,8 @@
-import {SAVE_USERS} from "../actionTypes";
+import {GET_ALL_AUTH_USERS, SAVE_USERS} from "../actionTypes";
 
 const initialValue = {
-    users: [{
-        "id": 1, "email": "inventtadmin@allegion.com", "firstname": "admin", "lastName": "Lname", "isActive": true
-    }, {
-        "id": 2,
-        "email": "sankarganesh22.subramaniam@allegion.com",
-        "firstname": "Sankar ",
-        "lastName": "Ganesh",
-        "isActive": true
-    }, {
-        "id": 3, "email": "ww", "firstname": "Sankar ", "lastName": "Ganesh", "isActive": true
-    }, {
-        "id": 4,
-        "email": "sankarganesh.subramaniam@allegion.com",
-        "firstname": "Sankar ",
-        "lastName": "Ganesh",
-        "isActive": true
-    }]
+    users: [],
+    initialLoad:false,
 }
 
 export default function Users(state=initialValue, action) {
@@ -25,8 +10,13 @@ export default function Users(state=initialValue, action) {
         case SAVE_USERS:
             const newUsers = action.payload;
             return{
-                ...state,
                 users: newUsers,
+                initialLoad: true
+            }
+        case GET_ALL_AUTH_USERS:
+            return{
+                users: state.users.slice(),
+                initialLoad: true,
             }
         default:
             return state;

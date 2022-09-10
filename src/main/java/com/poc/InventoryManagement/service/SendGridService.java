@@ -17,18 +17,19 @@ import java.io.IOException;
 @Service
 @Slf4j
 public class SendGridService {
-
-    @Autowired
     private SendGrid sendGrid;
-    @Autowired
     private EmailProperties emailProperties;
+    SendGridService(SendGrid sendGrid , EmailProperties emailProperties){
+        this.sendGrid = sendGrid;
+        this.emailProperties = emailProperties;
+    }
 
     public String sendEmail(String message, String email, String subject) {
         System.out.println("Email props -> "+ emailProperties);
         Email from = new Email(emailProperties.fromEmail);
-        String emailSubject = "InventT Invite " + email;
+        String emailSubject = "Allegion InventT Invite " + subject;
         Email to = new Email(email);
-        Content content = new Content("text/html", "I'm replacing the <strong>body tag</strong>" + message);
+        Content content = new Content("text/html",  message);
 
         Mail mail = new Mail(from, emailSubject, to, content);
 
@@ -38,16 +39,16 @@ public class SendGridService {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
+            //Email can be enabled or disabled by configuration
             if (emailProperties.enabled) {
                 response = sendGrid.api(request);
             } else {
                 log.info("Email Notifications were disabled via configuration " + request.getBody());
             }
-
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            log.error("Exception while sending email \n "+ ex);
+           throw new RuntimeException("Exception while sending email");
         }
         return "email was successfully send";
     }
-
 }

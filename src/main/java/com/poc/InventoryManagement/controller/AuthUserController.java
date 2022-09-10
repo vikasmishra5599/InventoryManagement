@@ -28,8 +28,8 @@ public class AuthUserController {
 
     @PostMapping
     @ManagerRole
-    public ResponseEntity<AuthUser> addUser(@RequestBody AddUserRequest addUserRequest) throws NoSuchAlgorithmException, InvalidInputException {
-        AuthUser savedUser = userService.addNewUser(addUserRequest);
+    public ResponseEntity<AuthUserResponse> addUser(@RequestBody AddUserRequest addUserRequest) throws NoSuchAlgorithmException, InvalidInputException {
+        AuthUserResponse savedUser = userService.addNewUser(addUserRequest);
         return new ResponseEntity<>(savedUser,HttpStatus.OK);
     }
 
@@ -42,8 +42,7 @@ public class AuthUserController {
     @GetMapping("/getAuthUserDetails")
     @AuthUserRole
     public ResponseEntity<AuthUserResponse> getAuthUserDetails(){
-     String name = SecurityContextHolder.getContext().getAuthentication().getName();
-     return new ResponseEntity<>(userService.getAuthUserByEmail(name),HttpStatus.OK);
+     return new ResponseEntity<>(userService.getAuthUserDetails(),HttpStatus.OK);
     }
 
 }

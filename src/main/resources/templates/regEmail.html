@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
@@ -11,12 +8,19 @@
             name="description"
             content="Inventory Solution"
     />
+    <style>
+        body {
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+    </style>
 </head>
-<body style="font-family: Raleway,serif">
+<body style="font-family: serif">
+<h4> Allegion InventT App Invite</h4>
 <div>Welcome <b th:text="${name}"></b></div>
 
 <div> Your username is <b th:text="${email}"></b></div>
-<div><a th:href="${'http://localhost:8081/ims/register?key='} + ${resetKey}">Click Here to reset your Password.</a></div>
+<div><a th:href="${domain}+'/ims/resetPassword?key='+ ${resetKey}"> Click Here to set your Password to use Application.</a></div>
+</br>
 <div>This link will expire in 72 hours.</div>
 </br>
 <div>Allegion InventT Team</div>

@@ -4,6 +4,7 @@ import SideNavigation from "./SideNavigation";
 import UserProfile from "./UserProfile";
 import Teams from "./Teams";
 import Users from "./Users";
+import AddEditUserDialog from "./AddEditUserDialog";
 
 
 export const createRootReducer = () =>
@@ -12,5 +13,6 @@ export const createRootReducer = () =>
         SideNavigation,
         UserProfile,
         Teams,
-        Users
+        Users,
+        AddEditUserDialog
     });

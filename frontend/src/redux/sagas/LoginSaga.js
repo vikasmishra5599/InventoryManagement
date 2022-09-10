@@ -5,7 +5,8 @@ import * as LoginRequest from "../../Utils/DAO/LoginRequest";
 import {deleteToken, saveToken} from "../../Utils/TokenUtils";
 import {isEmpty} from "lodash";
 import {enqueueAPPSnackbar} from "../../Utils/SnackbarUtils";
-import {history} from "../../configureStore"
+import {history} from "../../configureStore";
+import {baseUrl} from "../../Constants/URLs/URLs";
 
 export const loginRequestWatcher=function*(){
     yield takeLatest(actionTypes.LOGIN, loginRequest);
@@ -33,7 +34,7 @@ export const logoffRequestWatcher=function*(){
 function* logoffRequest(){
     deleteToken();
     yield put (enqueueSnackbar (enqueueAPPSnackbar('Logged off successfully !!', 'success')));
-    yield put (history.push('/'))
+    yield put (history.push(baseUrl))
 }
 
 export const saveResetPasswordWatcher = function* () {

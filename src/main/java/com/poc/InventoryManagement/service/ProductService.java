@@ -20,19 +20,20 @@ public class ProductService {
 
     private ProductRepository productRepository;
     private ProductAssignmentRepository productAssignmentRepository;
+    private UserService userService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductAssignmentRepository productAssignmentRepository) {
+    public ProductService(ProductRepository productRepository, ProductAssignmentRepository productAssignmentRepository, UserService userService) {
         this.productAssignmentRepository = productAssignmentRepository;
         this.productRepository = productRepository;
+        this.userService = userService;
     }
 
     public Product saveProduct(ProductRequest request) throws Exception {
         Product product = mapRequestToEntity(request);
         Product prodResponse = productRepository.save(product);
         if (prodResponse.getId() != null) {
-            //TODO : To be replaced by logged In user for assignedTo as its a new device addition
-            ProductAssignmentRequest newlyAssignedDevice = new ProductAssignmentRequest(prodResponse.getId(), 1, "Newly added device");
+            ProductAssignmentRequest newlyAssignedDevice = new ProductAssignmentRequest(prodResponse.getId(), (int) userService.getAuthUserDetails().id(), "Newly added device");
             ProductAssignment productAssignment = createProductRecord(newlyAssignedDevice);
             productAssignmentRepository.save(productAssignment);
         }
@@ -47,8 +48,7 @@ public class ProductService {
         product.setSerialNumber(request.getSerialNumber());
         product.setLocation(request.getLocation());
         product.setComments(request.getComments());
-        //TODO : To be replaced by logged In user
-        product.setOwner(1);
+        product.setOwner((int) userService.getAuthUserDetails().id());
         product.setTrackingId(request.getTrackingId());
         product.setStatus(request.getStatus());
         product.setAddedTime(ZonedDateTime.now());
@@ -86,8 +86,7 @@ public class ProductService {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         ProductAssignment assignProduct = new ProductAssignment();
         assignProduct.setProductId(request.getId());
-        //TODO : To be replaced by logged In user
-        assignProduct.setAssignee(1);
+        assignProduct.setAssignee((int) userService.getAuthUserDetails().id());
         assignProduct.setAssignedTo(request.getAssignedTo());
         assignProduct.setComments(request.getComments());
         assignProduct.setAssignedStartTime(timestamp);

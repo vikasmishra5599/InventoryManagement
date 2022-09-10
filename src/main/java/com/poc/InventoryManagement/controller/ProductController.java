@@ -4,6 +4,7 @@ import com.poc.InventoryManagement.entity.Product;
 import com.poc.InventoryManagement.entity.ProductAssignment;
 import com.poc.InventoryManagement.request.ProductAssignmentRequest;
 import com.poc.InventoryManagement.request.ProductRequest;
+import com.poc.InventoryManagement.security.Annotations.AuthUserRole;
 import com.poc.InventoryManagement.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class ProductController {
     }
 
     @PostMapping("/create")
+    @AuthUserRole
     public Product saveProduct(@RequestBody ProductRequest request) throws Exception {
         return productService.saveProduct(request);
     }

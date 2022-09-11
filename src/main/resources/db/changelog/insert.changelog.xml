@@ -2,8 +2,9 @@
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
-   <changeSet author="ssubramaniam (generated)" id="1662534267106-1">
+   <changeSet author="ssubramaniam" id="add-super-users-auth-data">
         <insert tableName="auth_user">
+            <column name="id" value="1"/>
             <column name="password" value="$2a$05$LMUUEHdI1g2lUyjH.pQoDOSsxW6zag8xjWqIjHikMboanUu5Got4C"/>
             <column name="active" valueBoolean="true"/>
             <column name="email" value="inventtadmin@allegion.com"/>
@@ -19,7 +20,7 @@
             <column name="reset_password_key"/>
         </insert>
     </changeSet>
-    <changeSet author="ssubramaniam (generated)" id="1662534267106-2">
+    <changeSet author="ssubramaniam" id="add-roles">
         <insert tableName="role">
             <column name="id" valueNumeric="3"/>
             <column name="name" value="ROLE_MANAGER"/>
@@ -33,7 +34,7 @@
             <column name="name" value="ROLE_USER"/>
         </insert>
     </changeSet>
-    <changeSet author="ssubramaniam (generated)" id="1662534267106-3">
+    <changeSet author="ssubramaniam" id="assign-role-to-user">
         <insert tableName="auth_user_roles">
             <column name="users_id" valueNumeric="1"/>
             <column name="roles_id" valueNumeric="2"/>

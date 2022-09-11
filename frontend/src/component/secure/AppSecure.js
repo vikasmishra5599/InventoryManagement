@@ -23,12 +23,6 @@ function AppSecure(props){
         <div className="InventoryManagementApp">
             <h1> Inventory Management System</h1>
             <SideNavigation/>
-            {/*<Switch>
-                <RouteWithLayout exact path="/employee" component={EmployeeRegistration} />
-                <RouteWithLayout exact path="/product" component={ProductRegistration} />
-                <RouteWithLayout exact path="/audit" component={Audit} />
-                <RouteWithLayout component={Dashboard} />
-            </Switch>*/}
         </div>
     );
 };

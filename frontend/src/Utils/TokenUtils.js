@@ -20,11 +20,12 @@ export function getToken() {
     return getCookie(TOKEN);
 }
 
-export function saveToken(token) {
+export function saveToken(token , expiration) {
     if (token) {
         let date = new Date();
-        date.setTime(date.getTime() + 180000);
-        document.cookie = `${TOKEN}=${token}; expires=${date.toUTCString()};path=/`;
+        console.log(` expiration -> `, expiration);
+        date.setTime(expiration);
+        document.cookie = `${TOKEN}=${token}; expires=${expiration};path=/`;
     }
     return true;
 }

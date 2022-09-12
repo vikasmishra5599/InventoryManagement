@@ -3,6 +3,7 @@ import qs from 'qs';
 import { getToken } from './TokenUtils';
 import {store} from "../component/AppProvider";
 import * as actionTypes from "../redux/actionTypes";
+import {enqueueAPPSnackbar} from "./SnackbarUtils";
 
 class ajax {
     static get(url, params,headers, bearerToken) {
@@ -13,6 +14,11 @@ class ajax {
     static post(url, data, params, headers, bearerToken) {
         return this.ajax('post', url, data, params, headers, bearerToken);
     }
+
+    static put(url, data, params, headers, bearerToken) {
+        return this.ajax('put', url, data, params, headers, bearerToken);
+    }
+
 
     static ajax(method, url, data, params, reqHeaders, bearerToken) {
         params = params || {};
@@ -36,6 +42,10 @@ class ajax {
                 if (error.response.status === 401) {
                     // handle unauthorized status centrally, clear cookies and go to login page
                     console.log(`401 Authorization Error !`);
+                    store.dispatch({
+                        type: actionTypes.ENQUEUE_SNACKBAR,
+                        notification: enqueueAPPSnackbar('Authorization failure . App will Logout ', 'error')
+                    });
                     if (getToken().length > 0){
                         store.dispatch({
                             type: actionTypes.LOGOFF

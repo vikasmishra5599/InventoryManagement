@@ -1,6 +1,6 @@
 import RoundCloseIcon from '@mui/icons-material/Close';
 import { closeSnackbar } from '../redux/action';
-import Button from "@mui/material/Button";
+import {IconButton} from "@mui/material";
 
 export function enqueueAPPSnackbar(message, variant) {
     return({
@@ -10,9 +10,9 @@ export function enqueueAPPSnackbar(message, variant) {
             autoHideDuration:3000,
             key: new Date().getTime() + Math.random(),
             action: (key) => (
-                <Button onClick={() => closeSnackbar(key)}>
+                <IconButton onClick={() => closeSnackbar(key)}>
                     <RoundCloseIcon style={{color:"white"}} />
-                </Button>
+                </IconButton>
             ),
         },
     });

@@ -1,4 +1,4 @@
-import {GET_ALL_AUTH_USERS, SAVE_USERS} from "../actionTypes";
+import {GET_ALL_AUTH_USERS, SAVE_REG_UPDATE_USER_RESPONSE, SAVE_USERS} from "../actionTypes";
 
 const initialValue = {
     users: [],
@@ -12,12 +12,23 @@ export default function Users(state=initialValue, action) {
             return{
                 users: newUsers,
                 initialLoad: true
-            }
+            };
+
         case GET_ALL_AUTH_USERS:
-            return{
-                users: state.users.slice(),
-                initialLoad: true,
-            }
+        return{
+            ...state,
+            initialLoad: true
+        };
+
+        case SAVE_REG_UPDATE_USER_RESPONSE:
+            const newUserList = state.users.slice();
+            const filteredUser = newUserList.filter(user => user.id !== action.user.id );
+            filteredUser.push(action.user);
+            return {
+                ...state,
+                users: filteredUser
+            };
+
         default:
             return state;
 }

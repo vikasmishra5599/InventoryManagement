@@ -78,9 +78,7 @@ function SideNav(props) {
     } = props;
 
     const history = useHistory();
-
     const [pathToggle, setPathToggle] = useState(false);
-
     const handleDrawer = () => {
         sideNavDrawerToggle();
     };
@@ -88,6 +86,10 @@ function SideNav(props) {
     function routerPush(path) {
         setPathToggle(!pathToggle);
         history.push(path);
+    }
+
+    const isCurrentPath = (path) => {
+        return history?.location.pathname === path;
     }
 
     return (
@@ -105,6 +107,7 @@ function SideNav(props) {
                                     minHeight: 48,
                                     justifyContent: isOpen ? 'initial' : 'center',
                                     px: 2.5,
+                                    backgroundColor: isCurrentPath(menu.path) ? 'rgb(0 0 0 / 12%)' : []
                                 }}
                             >
                                 <ListItemIcon
@@ -128,11 +131,10 @@ function SideNav(props) {
             </Drawer>
             <div>
                 {/*<BreadCrumb/>*/}
-                <Switch >
+                <Switch>
                     <Route exact path="/"> <DashboardContainer/> </Route>
                     <Route exact path="/product"> <ProductRegistration/> </Route>
-                    <Route exact path="/users">  <Users/> </Route>
-
+                    <Route exact path="/users"> <Users/> </Route>
                 </Switch>
             </div>
         </Box>

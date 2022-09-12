@@ -62,13 +62,39 @@ public class UserService {
         return authUserMapper(user);
     }
 
+
+    public AuthUserResponse updateUser(AddUserRequest addUserRequest)  {
+
+        AuthUser authUser = authUserRepository.getAuthUserByEmailId(addUserRequest.email()).orElseThrow();
+        if(getAuthUserDetails().email().equals(addUserRequest.email())) {
+            throw new BadRequestException("Self update Not allowed!");
+        }
+        //Email change requires invite resend so this will be disabled in UI also
+        // authUser.setEmail(addUserRequest.email());
+        authUser.setFirstName(addUserRequest.firstName());
+        authUser.setLastName(addUserRequest.lastName());
+        authUser.setIncorrectAttempts(0);
+        authUser.setPhoneNo(addUserRequest.phoneNumber());
+        authUser.setRegKey(null);
+        authUser.setRegLinkActive(false);
+        authUser.setRegLinkExpiry(null);
+        Set<Role> roles =  authUser.getRoles();
+        roles.clear();
+        roles.add(getUserRole());
+        if (addUserRequest.isManager() ) {roles.add(getMangerRole());}
+        authUser.setRoles(roles);
+        AuthUser user =authUserRepository.save(authUser);
+        return authUserMapper(user);
+    }
+
     public List<AuthUserResponse> getAllAuthUsers(){
         List<AuthUser> userList = authUserRepository.findAll();
         return userList.stream().map(this::authUserMapper).collect(Collectors.toList());
     }
 
-    private AuthUserResponse authUserMapper(AuthUser authUser){
-        return new AuthUserResponse(authUser.getId(),authUser.getEmail(),authUser.getFirstName(),authUser.getLastName(), authUser.isActive(), authUser.getRoles().stream().map(n->n.getName()).toList());
+    private AuthUserResponse authUserMapper(AuthUser authUser) {
+        return new AuthUserResponse(authUser.getId(), authUser.getEmail(), authUser.getFirstName(), authUser.getLastName(),
+                authUser.isActive(), authUser.getRoles().stream().map(Role::getName).toList(), authUser.getPhoneNo());
     }
 
     private boolean checkEmailExists(String email){
@@ -76,13 +102,11 @@ public class UserService {
     }
 
     private Role getMangerRole(){
-        Role managerRole = roleRepository.getRolebyName("ROLE_MANAGER").get();
-        return managerRole;
+        return roleRepository.getRolebyName("ROLE_MANAGER").get();
     }
 
     private Role getUserRole(){
-        Role userRole = roleRepository.getRolebyName("ROLE_USER").get();
-        return userRole;
+        return roleRepository.getRolebyName("ROLE_USER").get();
     }
 
     public AuthUserResponse getAuthUserByEmail(String email){

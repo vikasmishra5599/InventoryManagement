@@ -9,20 +9,45 @@
             content="Inventory Solution"
     />
     <style>
+        header {
+            background-color: rgb(0, 45, 192);
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            color: white;
+        }
+        footer {
+            background-color: rgb(0, 45, 192);
+            padding: 15px;
+            text-align: center;
+            color: white;
+            font-size: 15px;
+        }
         body {
             font-family: 'Trebuchet MS', sans-serif;
+            padding: 20px;
         }
     </style>
 </head>
+<header>
+    <h4>Allegion InventT(Inventory Systems) Invite </h4>
+</header>
 <body style="font-family: serif">
-<h4> Allegion InventT App Invite</h4>
 <div>Welcome <b th:text="${name}"></b></div>
 
 <div> Your username is <b th:text="${email}"></b></div>
-<div><a th:href="${domain}+'/ims/resetPassword?key='+ ${resetKey}"> Click Here to set your Password to use Application.</a></div>
+<div><a th:href="${domain}+'/resetpassword?key='+ ${resetKey}"> Click Here to set your Password to use Application.</a></div>
 </br>
 <div>This link will expire in 72 hours.</div>
 </br>
 <div>Allegion InventT Team</div>
+</br>
+</br>
+</br>
+</br>
+
 </body>
+<footer>
+    <p>  Allegion 2022</p>
+</footer>
 </html>

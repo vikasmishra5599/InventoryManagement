@@ -32,6 +32,6 @@ public class JWTController {
         );
         var jwt = tokenProvider.generate(authentication.getName(), authentication.getAuthorities());
         var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        return ResponseEntity.ok(new TokenResponse(authentication.getName(), authorities, jwt));
+        return ResponseEntity.ok(new TokenResponse(authentication.getName(), authorities, jwt.jwt(), jwt.expiration().toString(), jwt.issuedAt()));
     }
 }

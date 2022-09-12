@@ -5,6 +5,7 @@ import {isEmpty} from "lodash";
 import {enqueueSnackbar} from "../action";
 import {enqueueAPPSnackbar} from "../../Utils/SnackbarUtils";
 import {history} from "../../configureStore"
+import {baseUrl} from "../../Constants/URLs/URLs";
 
 export const forgotPassworsRequestWatcher=function*(){
     yield takeLatest(actionTypes.RESET_PASSWORD, forgotPasswordRequest);
@@ -15,7 +16,7 @@ function* forgotPasswordRequest(action){
         const response = yield call(LoginRequest.forgotPassword, action.payload);
         if (!isEmpty(response.data)) {
             yield put(enqueueSnackbar(enqueueAPPSnackbar(response.message, 'success')));
-            yield put(history.push('/'));
+            yield put(history.push(baseUrl));
         }
     } catch (error) {
         yield put(enqueueSnackbar(enqueueAPPSnackbar(`Reset password Error ${error?.response?.data?.message}` , 'error')));

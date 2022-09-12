@@ -16,3 +16,12 @@ export const saveRegisterUserRest=(data)=>{
     }
     return ajax.post('/ims/AuthUser',  data, null, apiHeaders,true);
 }
+
+export const updateUserRest=(data)=>{
+    const apiHeaders={
+        "Content-type" :"application/json",
+        "Accept" : "application/json;version=2",
+    }
+    return ajax.put('/ims/AuthUser',  data, null, apiHeaders,true);
+}
+

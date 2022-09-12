@@ -6,6 +6,7 @@ import CustomMUITable from "../../../../common/Table/CustomMUITable";
 
 const mapStateToProps=(store)=>({
     data:store.Users.users,
+    profile: store.UserProfile.profile,
 })
 
 const mapDisPatchToProps={
@@ -60,17 +61,17 @@ const mergeProps=(stateProps, dispatchProps, ownProps)=>{
         useDensePadding : true,
         tableWidth:1200,
         rowActions:[
-            {
+           /* {
                 icon:<DeleteRoundedIcon sx={{color:"red"}} />,
                 onClickAction: (rowData)=> {
                     console.log(` Delete row data `, rowData);
                     deActivateUser(rowData);
                 },
-            },
+            },*/
             {
+                disabled: (rowData) =>(rowData.id === stateProps.profile.id),
                 icon: <Edit sx={{color:"#121193"}}/>,
                 onClickAction: (rowData)=> {
-                    console.log(` Edit row data `, rowData);
                     dispatchProps.setAddEditUserDialogOpen(true, true, rowData);
                 },
             }

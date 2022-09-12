@@ -1,6 +1,7 @@
 package com.poc.InventoryManagement.security;
 
 import com.poc.InventoryManagement.config.JwtProperties;
+import com.poc.InventoryManagement.dto.GeneratedJWT;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
@@ -40,13 +41,13 @@ public class TokenProvider {
                 .build();
     }
 
-    public String generate(String name, Collection<? extends GrantedAuthority> authorities) {
+    public GeneratedJWT generate(String name, Collection<? extends GrantedAuthority> authorities) {
         final var issuedAt = Date.from(Instant.now());
         final var expiration = Date.from(Instant.now().plus(jwtProperties.getExpiration()));
         final var auths = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
-        return Jwts.builder()
+        return new GeneratedJWT(Jwts.builder()
                 .setIssuer(ISSUER_VALUE)
                 .setAudience(AUDIENCE_VALUE)
                 .setId(ID_VALUE)
@@ -55,7 +56,7 @@ public class TokenProvider {
                 .setSubject(name)
                 .claim(ROLES_KEY, auths)
                 .signWith(key)
-                .compact();
+                .compact(), issuedAt, expiration);
     }
     public Jws<Claims> parse(String jwt) {
         return parser.parseClaimsJws(jwt);

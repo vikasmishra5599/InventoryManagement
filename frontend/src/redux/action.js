@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import {SAVE_REG_UPDATE_USER_RESPONSE} from "./actionTypes";
 
 export const addEmployee = () => ({
     type: actionTypes.ADD_EMPLOYEE,
@@ -18,6 +19,7 @@ export const login =(username, password)=>({
 
 export const enqueueSnackbar = (notification) => {
     const key = notification.options && notification.options.key;
+    console.log('key @ enqueue snackbar ', key);
     return {
         type: actionTypes.ENQUEUE_SNACKBAR,
         notification: {
@@ -99,5 +101,13 @@ export const saveRegisterUser=(user)=>({
 export const saveResponseUsers=(payload)=>({
     type:actionTypes.SAVE_USERS,
     payload:payload
+})
+
+export const saveUserResponseAfterRegisterOrUpdate=(user)=>(
+
+    {
+    type: actionTypes.SAVE_REG_UPDATE_USER_RESPONSE,
+    user:user,
+        theLog: ()=>{console.log('saveUserResponseAfterRegisterOrUpdate -> user', user )},
 })
 

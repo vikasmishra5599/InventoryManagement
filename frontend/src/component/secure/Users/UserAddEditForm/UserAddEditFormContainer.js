@@ -4,18 +4,19 @@ import {saveEditUser, saveRegisterUser, setAddEditUserDialogOpen} from "../../..
 
 
 const mapStateToProps = (store) => ({
-    isOpen: store.AddEditUserDialog.isOpen, user: store.AddEditUserDialog.user, isEdit: store.AddEditUserDialog.isEdit
+    isOpen: store.AddEditUserDialog.isOpen,
+    user: store.AddEditUserDialog.user,
+    isEdit: store.AddEditUserDialog.isEdit,
+    resetValues: store.AddEditUserDialog.resetValues
 })
 
 const mapDispatchToProps = {
-    setAddEditUserDialogOpen, saveEditUser, saveRegisterUser
+    setAddEditUserDialogOpen,
+    saveEditUser,
+    saveRegisterUser
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-    console.log( ' state props ', stateProps);
-    console.log( ' dispatchProps ', dispatchProps);
-    console.log( ' ownProps ', ownProps);
-
     return ({
         ...ownProps, ...stateProps, ...dispatchProps,
         testValue: 'this is test',

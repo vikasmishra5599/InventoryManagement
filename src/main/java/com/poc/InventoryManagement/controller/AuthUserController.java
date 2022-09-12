@@ -45,4 +45,11 @@ public class AuthUserController {
      return new ResponseEntity<>(userService.getAuthUserDetails(),HttpStatus.OK);
     }
 
+    @PutMapping
+    @ManagerRole
+    public ResponseEntity<AuthUserResponse> updateUser(@RequestBody AddUserRequest addUserRequest) throws NoSuchAlgorithmException, InvalidInputException {
+        AuthUserResponse savedUser = userService.updateUser(addUserRequest);
+        return new ResponseEntity<>(savedUser,HttpStatus.OK);
+    }
+
 }

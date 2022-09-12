@@ -25,7 +25,7 @@ public class EmailService {
         regCtx.setVariable("email",email);
         regCtx.setVariable("resetKey",regKey);
         regCtx.setVariable("domain",emailProperties.domain);
-        final String htmlContent = this.templateEngine.process("resetPassword.html", regCtx);
+        final String htmlContent = this.templateEngine.process("regEmail.html", regCtx);
         return sendGridService.sendEmail(htmlContent,email, "InventT Invite");
     }
 

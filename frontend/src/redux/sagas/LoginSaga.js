@@ -6,7 +6,6 @@ import {deleteToken, saveToken} from "../../Utils/TokenUtils";
 import {isEmpty} from "lodash";
 import {enqueueAPPSnackbar} from "../../Utils/SnackbarUtils";
 import {history} from "../../configureStore";
-import {baseUrl} from "../../Constants/URLs/URLs";
 
 export const loginRequestWatcher=function*(){
     yield takeLatest(actionTypes.LOGIN, loginRequest);
@@ -18,7 +17,7 @@ function* loginRequest(action){
         const response = yield call(LoginRequest.login, username, password);
         if (!isEmpty(response.data && response.data.jwt )){
             if (response.data.jwt){
-                saveToken(response.data.jwt,response);
+                saveToken(response.data.jwt,response.data.expiration);
                 yield put(saveProfile({user: response.data.username, roles: response.data.authorities}));
             }
         }
@@ -34,7 +33,6 @@ export const logoffRequestWatcher=function*(){
 function* logoffRequest(){
     deleteToken();
     yield put (enqueueSnackbar (enqueueAPPSnackbar('Logged off successfully !!', 'success')));
-    yield put (history.push(baseUrl))
 }
 
 export const saveResetPasswordWatcher = function* () {

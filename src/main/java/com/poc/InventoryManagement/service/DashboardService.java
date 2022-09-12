@@ -14,9 +14,11 @@ public class DashboardService {
 
     private ProductRepository productRepository;
     private ProductAssignmentRepository productAssignmentRepository;
+    private UserService userService;
 
-    public DashboardService(ProductRepository productRepository, ProductAssignmentRepository productAssignmentRepository) {
+    public DashboardService(ProductRepository productRepository, UserService userService, ProductAssignmentRepository productAssignmentRepository) {
         this.productRepository = productRepository;
+        this.userService = userService;
         this.productAssignmentRepository = productAssignmentRepository;
     }
 
@@ -28,7 +30,6 @@ public class DashboardService {
     }
 
     private List<ProductAssignment> getCurrentlyAssignedProductsForUser() {
-        //TODO : To be replaced by logged In user
-        return productAssignmentRepository.findCurrentlyAssignedProductsForUser(1);
+        return productAssignmentRepository.findCurrentlyAssignedProductsForUser((int) userService.getAuthUserDetails().id());
     }
 }

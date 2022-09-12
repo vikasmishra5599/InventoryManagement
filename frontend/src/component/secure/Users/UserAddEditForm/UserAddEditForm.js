@@ -2,7 +2,7 @@ import {Button, Dialog, DialogContent, DialogTitle, FormControl, Typography} fro
 import {CloseRounded} from "@mui/icons-material";
 import {Form} from 'react-final-form';
 import {Switches, TextField} from "../../../../common/FormComponents";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {isEmpty} from "lodash";
 import {checkValidEmail} from "../../../../Utils/Validation/Validation";
 
@@ -14,34 +14,49 @@ export function UserAddEditForm(props) {
         handleSaveUpdate,
         isEdit,
         setAddEditUserDialogOpen,
-        user
+        user,
+        resetValues,
     } = props;
 
-    console.log('UserAddEditForm props', props);
-
-    const [isManager, setIsManagerInput] = useState(false);
+    const [initialFormValue,setInitialFormValue]= useState({
+        ...user,
+        isManager:user?.roles?.includes('ROLE_MANAGER')
+    });
 
     const onSubmit = (values, form) => {
-        console.log(` onSubmit `, values)
         const requestValues = {
             ...values,
-            isManager : isManager
         }
-        console.log(' Req val ', requestValues);
         handleSaveUpdate(requestValues);
         /*Object.keys(values).forEach(key => {
             form.change(key, undefined) && form.resetFieldState(key)
         });*/
     };
 
+    useEffect(()=>{
+        if (resetValues){
+            setInitialFormValue({});
+        }
+    },[resetValues,setInitialFormValue])
+
+    useEffect(()=>{
+        if (isEdit) {
+            console.log(`is Edit `, user.roles)
+                setInitialFormValue({
+                    ...user,
+                    isManager:user?.roles?.includes('ROLE_MANAGER')
+                })
+            }
+        else{
+            setInitialFormValue({}
+            );
+        }
+
+    },[isEdit,user,setInitialFormValue]);
+
     const handleClickCloseIcon = () => (
         setAddEditUserDialogOpen(false, false, undefined)
     )
-
-    const handleIsManagerCheck = (event) => {
-        setIsManagerInput(event.target.checked);
-    }
-
 
     async function validate(values) {
         let validateObj ={};
@@ -78,7 +93,8 @@ export function UserAddEditForm(props) {
                     <Form
                         onSubmit={onSubmit}
                         validate={validate}
-                        render={({handleSubmit, values}) => (
+                        initialValues={initialFormValue}
+                        render={({ handleSubmit, pristine, form, submitting, values }) => (
                             <>
                             <form onSubmit={handleSubmit}>
                                 <FormControl fullWidth sx={{m: 1}} variant="standard" id="first-name-input-id">
@@ -90,7 +106,7 @@ export function UserAddEditForm(props) {
                                                helperText={"Last name of User"}/>
                                 </FormControl>
                                 <FormControl fullWidth sx={{m: 1}} variant="standard" id="email-input-id">
-                                    <TextField label="Email" name="email"
+                                    <TextField label="Email" name="email" disabled={isEdit}
                                                helperText={"Email of user"}/>
                                 </FormControl>
                                 <FormControl fullWidth sx={{m: 1}} variant="standard" id="phone-number-input-id">
@@ -101,15 +117,15 @@ export function UserAddEditForm(props) {
                                     <Switches
                                         id="is-manager-switch-id"
                                         name="isManager"
+                                        label="isManager"
                                         key='id-set-serial-number-input'
-                                        onChange={handleIsManagerCheck}
-                                        checked={isManager}
-                                        data={{label: (isManager) ? ' User will be Assigned Manger role' :'Is Manager', value: {isManager}, checked: {isManager}}}
+                                        data={{ label: 'isManager', value: 'isManager' }}
                                     />
                                 </FormControl>
 
                                 <FormControl sx={{m: 1}}>
-                                    <Button variant="contained" type="submit" id="save-update-button-id">
+                                    <Button variant="contained" type="submit" id="save-update-button-id"
+                                            disabled={submitting || pristine} >
                                         {isEdit ? 'Update User' : 'Register User'}
                                     </Button>
                                 </FormControl>

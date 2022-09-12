@@ -245,7 +245,7 @@ export default function CustomMUITable(props) {
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
     return (
-        <Box sx={{display: 'flex' , padding: '5px'}}>
+        <Box sx={{display: 'flex' , padding: '5px' , paddingRight : '20px', textShadow: '0px 0px 0px black'}}>
             <Paper sx={{ width: '100%' }}>
                 <EnhancedTableToolbar numSelected={selected.length} title={title} selected={selected}/>
                 <TableContainer>
@@ -260,7 +260,7 @@ export default function CustomMUITable(props) {
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={data.length}
+                            rowCount={data?.length}
                             enableCheckBox={rowSelectCheckBox}
                             rowActions={rowActions}
                             columns={columns}
@@ -302,8 +302,8 @@ export default function CustomMUITable(props) {
                                             ))}
 
                                             {rowActions.length > 0 ? <TableCell align="center" sx={{padding:'0px'}}>
-                                                {rowActions.map(rowAction =>
-                                                    <IconButton onClick={() => rowAction.onClickAction(row)}>
+                                                {rowActions.map((rowAction,index) =>
+                                                    <IconButton key={`action-key-${index+1}`} onClick={() => rowAction.onClickAction(row)} disabled={rowAction.disabled ? rowAction.disabled(row) : false}>
                                                       {rowAction.icon ? rowAction.icon:[]}
                                                     </IconButton>
                                                 )}

@@ -52,7 +52,7 @@ docker-build-push-acr:
   services:
     - docker:dind
   before_script:
-    - docker login imscr.azurecr.io -u imscr --password-stdin avJvQKz03w5N1yw/QQBbgM9unqZsRk0J
+    - docker login imscr.azurecr.io -u imscr -p avJvQKz03w5N1yw/QQBbgM9unqZsRk0J
   script:
     - echo $CI_COMMIT_REF_SLUG
     - echo $CI_JOB_IMAGE

@@ -4,7 +4,6 @@ image:
 stages:         
   - build
   - publish
-  - deploy-aks-cluster
 
 build-job:      
   stage: build

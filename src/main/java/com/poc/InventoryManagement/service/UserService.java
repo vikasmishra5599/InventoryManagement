@@ -3,14 +3,11 @@ package com.poc.InventoryManagement.service;
 import com.poc.InventoryManagement.dto.AuthUserResponse;
 import com.poc.InventoryManagement.entity.AuthUser;
 import com.poc.InventoryManagement.entity.Role;
-import com.poc.InventoryManagement.entity.User;
 import com.poc.InventoryManagement.exception.BadRequestException;
 import com.poc.InventoryManagement.exception.InvalidInputException;
 import com.poc.InventoryManagement.repositories.AuthUserRepository;
 import com.poc.InventoryManagement.repositories.RoleRepository;
-import com.poc.InventoryManagement.repositories.UserRepository;
 import com.poc.InventoryManagement.request.AddUserRequest;
-import com.poc.InventoryManagement.request.UserRequest;
 import com.poc.InventoryManagement.utils.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +23,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
 
     private AuthUserRepository authUserRepository;
 
@@ -36,33 +31,10 @@ public class UserService {
     private RoleRepository roleRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, AuthUserRepository authUserRepository, EmailService emailService,RoleRepository roleRepository) {
-        this.userRepository = userRepository;
+    public UserService(AuthUserRepository authUserRepository, EmailService emailService,RoleRepository roleRepository) {
         this.authUserRepository = authUserRepository;
         this.emailService = emailService;
         this.roleRepository = roleRepository;
-    }
-
-    public User createUser(UserRequest userRequest) {
-        User user = mapRequestToEntity(userRequest);
-        return userRepository.save(user);
-    }
-
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
-    }
-
-    private User mapRequestToEntity(UserRequest request) {
-        User user = new User();
-        user.setName(request.getName());
-        user.setEmpId(request.getEmpId());
-        user.setEmailId(request.getEmailId());
-        user.setTeamName(request.getTeamName());
-        user.setContactNo(request.getContactNo());
-        user.setSupervisorName(request.getSupervisorName());
-        user.setManager(request.getManager());
-        user.setCreatedTime(ZonedDateTime.now());
-        return user;
     }
 
     @Transactional

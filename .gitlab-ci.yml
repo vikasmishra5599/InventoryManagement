@@ -14,7 +14,7 @@ build-job:
     paths:
       - target/
 
-docker-build-gitlab-ci:
+docker-build-push-gitlab-ci:
   image: docker:latest
   stage: publish
   needs:
@@ -37,9 +37,6 @@ docker-build-gitlab-ci:
       fi
     - docker build --pull . -t "$CI_REGISTRY_IMAGE${tag}"
     - docker push "$CI_REGISTRY_IMAGE${tag}"
-  artifacts:
-    paths:
-      - images/
       # Run this job in a branch where a Dockerfile exists
   rules:
     - if: $CI_COMMIT_BRANCH
@@ -55,9 +52,12 @@ docker-build-push-acr:
   services:
     - docker:dind
   before_script:
-    - docker login imscr.azurecr.io -u imscr -p avJvQKz03w5N1yw/QQBbgM9unqZsRk0J
+    - docker login imscr.azurecr.io -u imscr --password-stdin avJvQKz03w5N1yw/QQBbgM9unqZsRk0J
   script:
     - echo $CI_COMMIT_REF_SLUG
+    - echo $CI_JOB_IMAGE
+    - echo $CI_COMMIT_SHA
+    - echo $CI_COMMIT_TAG
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
         tag=""
@@ -67,7 +67,8 @@ docker-build-push-acr:
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
     - docker build --pull . -t "$CI_REGISTRY_IMAGE${tag}"
-    - docker push "$CI_REGISTRY_IMAGE${tag}"
+    - docker tag "$CI_REGISTRY_IMAGE${tag}" imscr.azurecr.io/inventory-management:"$CI_REGISTRY_IMAGE${tag}"
+    - docker push imscr.azurecr.io/inventory-management:"$CI_REGISTRY_IMAGE${tag}"
     - echo "success"
   rules:
     - if: $CI_COMMIT_BRANCH

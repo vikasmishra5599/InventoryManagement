@@ -1,26 +1,34 @@
-import React from 'react';
-import {Switch} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import UnSecureView from "./component/unsecure/UnSecureView";
+import AppSecure from "./component/secure/AppSecure";
+import {connect} from "react-redux";
+import useNotifier from "./UseNotifier";
+import {getToken} from "./Utils/TokenUtils";
+import {useHistory} from "react-router-dom";
 
-import EmployeeRegistration from "./component/EmployeeRegistration";
-import ProductRegistration from "./component/ProductRegistration";
-import Audit from "./component/Audit";
-import Dashboard from "./component/Dashboard";
-import RouteWithLayout from './common/RouteWithLayout';
-import ProductAssignment from './component/ProductAssignment';
+function ImsApp(props) {
 
-function ImsApp() {
-  return (
-    <div className="InventoryManagementApp">
-        <h1> Inventory Management System</h1>
-        <Switch>
-          <RouteWithLayout exact path="/employee" component={EmployeeRegistration} />
-          <RouteWithLayout exact path="/product" component={ProductRegistration} />
-          <RouteWithLayout exact path="/audit" component={Audit} />
-          <RouteWithLayout exact path="/assignment" component={ProductAssignment} />
-          <RouteWithLayout component={Dashboard} />
-        </Switch>
-    </div>
-  );
+    const [secure, setSecure]=useState(false);
+
+    const history = useHistory();
+    useEffect(()=>{
+        if (getToken().length >0) {
+            setSecure(true);
+        }else{
+            setSecure(false);
+        }
+    },[getToken(),setSecure,history])
+
+    useNotifier();
+    return (
+        <div >
+            {secure ? <AppSecure/>: <UnSecureView/>}
+        </div>
+    );
 }
 
-export default ImsApp;
+const mapStateToProps=(store)=>({
+    initialLoad : store.UserProfile.initialLoad
+})
+
+export default connect(mapStateToProps,null) (ImsApp);

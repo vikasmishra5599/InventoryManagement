@@ -21,7 +21,6 @@ public class AuthUser {
     String firstName;
     String lastName;
     String phoneNo;
-    String emailId;
     boolean active;
     String regKey;
     boolean isRegLinkActive;

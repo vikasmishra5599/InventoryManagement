@@ -67,7 +67,7 @@ docker-build-push-acr:
         echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
       fi
     - docker build --pull . -t "$CI_REGISTRY_IMAGE${tag}"
-    - docker tag "$CI_REGISTRY_IMAGE${tag}" imscr.azurecr.io/inventory-management:"$CI_REGISTRY_IMAGE${tag}"
+    - docker tag "$CI_REGISTRY_IMAGE${tag}" imscr.azurecr.io/inventory-management:${tag}
     - docker push imscr.azurecr.io/inventory-management:${tag}
     - echo "success"
   rules:

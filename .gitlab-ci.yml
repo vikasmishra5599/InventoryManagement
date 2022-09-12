@@ -4,7 +4,8 @@ image:
 stages:         
   - build
   - publish
-  - deploy
+  - publish-acr
+  - deploy-aks-cluster
 
 build-job:      
   stage: build
@@ -44,9 +45,34 @@ docker-build:
       exists:
         - Dockerfile
 
-deploy-image:
+push-image:
   image: mcr.microsoft.com/azure-cli:latest
-  stage: deploy  
+  stage: publish-acr
+  environment: production
+  needs:
+    - job: docker-build
+  before_script:
+    - az login --service-principal -u b27121f0-8d8b-4799-bd52-c792ffcaf2d8 -p .a38Q~jME52A~c~wmixd8xBf-Z5xgqyAr-cq8aDs --tenant 9d7e183d-ddb2-438b-a6da-4b92eb265c57
+  script:
+    - echo "Pushing application to ACR"
+    - az account show
+    - echo $CI_REGISTRY
+    - echo "$CI_REGISTRY_USER"
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag=""
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+      else
+        tag=":$CI_COMMIT_REF_SLUG"
+        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+      fi
+    - az acr import -n myinventorycontainerregistry --source registry.gitlab.com/internal_team/inventorymanagement:latest --image inventorymanagement:v1 --username "$CI_REGISTRY_USER" --password "$CI_REGISTRY_PASSWORD"
+    - echo "successfully logged in to container"
+
+
+deploy-k8s:
+  image: mcr.microsoft.com/azure-cli:latest
+  stage: deploy-aks-cluster
   environment: production
   needs:
     - job: docker-build
@@ -54,11 +80,10 @@ deploy-image:
     - echo "Deploying application..."
     - az
     - az login --service-principal -u b27121f0-8d8b-4799-bd52-c792ffcaf2d8 -p .a38Q~jME52A~c~wmixd8xBf-Z5xgqyAr-cq8aDs --tenant 9d7e183d-ddb2-438b-a6da-4b92eb265c57
-    - az account show
-    - echo $CI_REGISTRY
-    - echo "$CI_REGISTRY_USER"
-    - az acr import -n myinventorycontainerregistry --source registry.gitlab.com/internal_team/inventorymanagement:latest --image inventorymanagement:v1 --username "$CI_REGISTRY_USER" --password "$CI_REGISTRY_PASSWORD"
-    - echo "successfully logged in"
+    - az aks get-credentials --name myfirstcluster --resource-group practice
+    - kubectl
+    - echo "successfully installed kubernetes"
+
 
 #For reference https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Maven.gitlab-ci.yml
 

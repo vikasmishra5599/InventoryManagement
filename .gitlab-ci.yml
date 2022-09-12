@@ -18,7 +18,7 @@ docker-build-gitlab-ci:
   image: docker:latest
   stage: publish
   needs:
-    - job: build
+    - job: build-job
       artifacts: true
   services:
     - docker:dind
@@ -50,7 +50,7 @@ docker-build-push-acr:
   image: docker:latest
   stage: publish
   needs:
-    - job: build
+    - job: build-job
       artifacts: true
   services:
     - docker:dind

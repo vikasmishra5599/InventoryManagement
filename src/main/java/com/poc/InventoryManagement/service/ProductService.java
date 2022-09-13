@@ -4,7 +4,6 @@ import com.poc.InventoryManagement.entity.Product;
 import com.poc.InventoryManagement.entity.ProductAssignment;
 import com.poc.InventoryManagement.repositories.ProductAssignmentRepository;
 import com.poc.InventoryManagement.repositories.ProductRepository;
-
 import com.poc.InventoryManagement.request.ProductAssignmentRequest;
 import com.poc.InventoryManagement.request.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,8 @@ public class ProductService {
         Product product = mapRequestToEntity(request);
         Product prodResponse = productRepository.save(product);
         if (prodResponse.getId() != null) {
-            ProductAssignmentRequest newlyAssignedDevice = new ProductAssignmentRequest(prodResponse.getId(), (int) userService.getAuthUserDetails().id(), "Newly added device");
-            ProductAssignment productAssignment = createProductRecord(newlyAssignedDevice);
+            ProductAssignmentRequest newlyAssignedDevice = new ProductAssignmentRequest(userService.getAuthUserDetails().id(), "Newly added device");
+            ProductAssignment productAssignment = createProductAssignmentRecord(newlyAssignedDevice, prodResponse.getId());
             productAssignmentRepository.save(productAssignment);
         }
         return prodResponse;
@@ -48,7 +47,7 @@ public class ProductService {
         product.setSerialNumber(request.getSerialNumber());
         product.setLocation(request.getLocation());
         product.setComments(request.getComments());
-        product.setOwner((int) userService.getAuthUserDetails().id());
+        product.setOwner(userService.getAuthUserDetails().id());
         product.setTrackingId(request.getTrackingId());
         product.setStatus(request.getStatus());
         product.setAddedTime(ZonedDateTime.now());
@@ -59,34 +58,37 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public ProductAssignment assignProduct(ProductAssignmentRequest request) throws Exception {
-        updateProductRecord(request);
-        ProductAssignment productAssignment = createProductRecord(request);
+    public ProductAssignment assignProduct(ProductAssignmentRequest request, Long id) throws Exception {
+        updateProductRecord(id);
+        ProductAssignment productAssignment = createProductAssignmentRecord(request, id);
         return productAssignmentRepository.save(productAssignment);
     }
 
-    private ProductAssignment updateProductRecord(ProductAssignmentRequest request) {
+    private ProductAssignment updateProductRecord(Long id) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        if (productAssignmentRepository.findByproductId(request.getId()) != null) {
-            ProductAssignment res = getProductIdWithEndTimeNull(request.getId());
-            if (res.getAssignedEndTime() == null) {
-                res.setAssignedEndTime(timestamp);
-                return productAssignmentRepository.save(res);
+        if (productAssignmentRepository.findByproductId(id) != null) {
+            ProductAssignment res = getProductIdWithEndTimeNull(id);
+            if (res != null) {
+                if (res.getAssignedEndTime() == null) {
+                    res.setAssignedEndTime(timestamp);
+                    return productAssignmentRepository.save(res);
+                }
             }
         }
         return null;
     }
 
 
-    private ProductAssignment createProductRecord(ProductAssignmentRequest request) throws Exception {
+    private ProductAssignment createProductAssignmentRecord(ProductAssignmentRequest request, Long id) throws Exception {
 
-        if(checkIfProductExists(request.getId())){
+        if (checkIfProductExists(id)) {
             throw new Exception("Product Doesn't Exists!");
         }
+
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         ProductAssignment assignProduct = new ProductAssignment();
-        assignProduct.setProductId(request.getId());
-        assignProduct.setAssignee((int) userService.getAuthUserDetails().id());
+        assignProduct.setProductId(id);
+        assignProduct.setAssignee(userService.getAuthUserDetails().id());
         assignProduct.setAssignedTo(request.getAssignedTo());
         assignProduct.setComments(request.getComments());
         assignProduct.setAssignedStartTime(timestamp);

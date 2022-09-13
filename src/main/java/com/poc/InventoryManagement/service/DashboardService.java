@@ -30,6 +30,6 @@ public class DashboardService {
     }
 
     private List<ProductAssignment> getCurrentlyAssignedProductsForUser() {
-        return productAssignmentRepository.findCurrentlyAssignedProductsForUser((int) userService.getAuthUserDetails().id());
+        return productAssignmentRepository.findCurrentlyAssignedProductsForUser(userService.getAuthUserDetails().id());
     }
 }

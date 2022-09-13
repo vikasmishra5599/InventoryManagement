@@ -21,5 +21,5 @@ public interface ProductAssignmentRepository extends JpaRepository<ProductAssign
     //    If user present in assignedTo column  and if the assignedendTime is null then get the id from productAssignment table
     //    From the id get the details from products table
     @Query("select PA from productassignment PA where PA.assignedTo =:i and PA.assignedEndTime is NULL")
-    List<ProductAssignment> findCurrentlyAssignedProductsForUser(int i);
+    List<ProductAssignment> findCurrentlyAssignedProductsForUser(Long i);
 }

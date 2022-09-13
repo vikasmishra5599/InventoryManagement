@@ -9,12 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductAssignmentRequest {
 
-    private Long id;
-    private int assignedTo;
+    private Long assignedTo;
     private String comments;
 
-    public ProductAssignmentRequest(Long id, int assignedTo, String comments) {
-        this.id = id;
+    public ProductAssignmentRequest(Long assignedTo, String comments) {
         this.assignedTo = assignedTo;
         this.comments = comments;
 

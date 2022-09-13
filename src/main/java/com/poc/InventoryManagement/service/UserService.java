@@ -117,4 +117,10 @@ public class UserService {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         return getAuthUserByEmail(name);
     }
+
+    public List<AuthUserResponse> getAllAssignmentAuthUsers() {
+        List<AuthUser> userResponse = authUserRepository.findAllUsersWithoutLoggedInUser(getAuthUserDetails().id());
+        List<AuthUserResponse> response = userResponse.stream().map(this::authUserMapper).collect(Collectors.toList());
+        return response;
+    }
 }

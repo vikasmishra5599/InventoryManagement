@@ -9,6 +9,7 @@ import {getAuthHeader} from "../../../Utils/TokenUtils";
 
 export default function DashboardContainer (props) {
     const [tableData, setTableData] = useState([]);
+    const [assignmentUsers, setAssignmentUsers] = useState([]);
     const [showError, setShowError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = React.useState(false);
@@ -36,6 +37,27 @@ export default function DashboardContainer (props) {
             {headers: requestHeader })
             .then((res) => {
                 setTableData(res.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err)
+                setShowError(true);
+                setLoading(false);
+            });
+    }
+
+    useEffect(() => {
+        fetchAssignmentUsers();
+    }, [])
+
+    const fetchAssignmentUsers = async () => {
+        setLoading(true);
+        setShowError(false);
+
+        await axios.get("/ims/AuthUser/getAllAssignmentUsersDetails",
+            {headers: requestHeader})
+            .then((res) => {
+                setAssignmentUsers(res.data);
                 setLoading(false);
             })
             .catch((err) => {
@@ -111,7 +133,6 @@ export default function DashboardContainer (props) {
         {
             icon:<PersonAddAlt1RoundedIcon sx={{color:"green"}} />,
             onClickAction: (rowData)=> {
-                console.log(` Assign product data `, rowData);
                 setAssignProductId(rowData.id);
                 setOpen(true);
             },
@@ -132,6 +153,6 @@ export default function DashboardContainer (props) {
             tableWidth={tableWidth}
             rowActions={rowActions}
         />
-        <ProductAssignment  open={open} onClose={handleClose} productId={assignProductId}/>
+        <ProductAssignment users={assignmentUsers} open={open} onClose={handleClose} productId={assignProductId}/>
     </>
 }

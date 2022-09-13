@@ -21,9 +21,9 @@ public class ProductAssignment {
     @Column(name="productid")
     private Long productId;
     @Column(name="assignee")
-    private int assignee;
+    private Long assignee;
     @Column(name="assignedto")
-    private int assignedTo;
+    private Long assignedTo;
     @Column(name="comments")
     private String comments;
     @Column(name="assignedstarttime")

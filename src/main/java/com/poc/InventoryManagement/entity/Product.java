@@ -28,7 +28,7 @@ public class Product {
     @Column(name = "location")
     private String location;
     @Column(name = "owner")
-    private int owner;
+    private Long owner;
     @Column(name = "comments")
     private String comments;
     @Column(name = "trackingid")

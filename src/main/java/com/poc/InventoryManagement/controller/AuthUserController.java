@@ -52,4 +52,10 @@ public class AuthUserController {
         return new ResponseEntity<>(savedUser,HttpStatus.OK);
     }
 
+    @GetMapping("/getAllAssignmentUsersDetails")
+    @AuthUserRole
+    public ResponseEntity<List<AuthUserResponse>> getAllAssignmentUsers(){
+        return new ResponseEntity<>(userService.getAllAssignmentAuthUsers(), HttpStatus.OK);
+    }
+
 }

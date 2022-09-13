@@ -32,9 +32,9 @@ public class ProductController {
         return productService.getAllProduct();
     }
 
-    @PostMapping("/assign")
-    public ProductAssignment assignProduct(@RequestBody ProductAssignmentRequest request) throws Exception {
-        return productService.assignProduct(request);
+    @PostMapping("/assign/{id}")
+    public ProductAssignment assignProduct(@RequestBody ProductAssignmentRequest request, @PathVariable Long id) throws Exception {
+        return productService.assignProduct(request,id);
     }
 
 }

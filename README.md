@@ -3,7 +3,9 @@
 1. java with spring boot
 2. React 
 3. In memory DB H2 (Will be migrating to Azure Postgresql)
-
+4. Docker
+5. Kubernetes
+6. Azure CLI
 
 
 ## Frontend
@@ -41,38 +43,30 @@ Go to browser, [http://localhost:8081/ims/](http://localhost:8081/ims/)
 
 docker image ls
 
-### Database
-
-H2: http://localhost:8081/ims/h2/
-
-username and password from config file
-
-
-
-## Azure
 
 ### Database
 
-For postgres, we used Azure SQL for Postgresql service. We created instance of service within Azure portal manually. 
-Now using host, username, password, and default database postgres(we can create our own database manually). We are hitting 
-postgres by making changes in application.properties. We can view table by hitting endpoint in postgres utility software
-on our system. View functionality not available on azure portal.
+Azure database for postgresql services used. Details available in application.properties
 
 
 ### Deploy
 
-Process 1:  In this we created app service in azure and then maven deploy to that resource
+From terminal, have azure cli installed
+
+` az login `  
 
 `mvn package azure-webapp:deploy`
 
+
+Check app: [http://alle-inventory-management-app.azurewebsites.net/ims/](http://alle-inventory-management-app.azurewebsites.net/ims/)
+
+
+
+
+
+**Note**: Just FYI, we have used below command to configure azure-webapp-maven-plugin in pom.xml
+
+` mvn com.microsoft.azure:azure-webapp-maven-plugin:2.6.1:config `
+
 Refer : [https://docs.microsoft.com/en-us/azure/app-service/quickstart-java?tabs=tomcat&pivots=platform-linux-development-environment-maven](https://docs.microsoft.com/en-us/azure/app-service/quickstart-java?tabs=tomcat&pivots=platform-linux-development-environment-maven)
 
-
-
-Note: Added for testing pipeline
-
-
-
-
-
-https://medium.com/google-cloud/kubernetes-101-pods-nodes-containers-and-clusters-c1509e409e16

@@ -4,10 +4,13 @@ import com.poc.InventoryManagement.entity.Product;
 import com.poc.InventoryManagement.entity.ProductAssignment;
 import com.poc.InventoryManagement.repositories.ProductAssignmentRepository;
 import com.poc.InventoryManagement.repositories.ProductRepository;
+import liquibase.pro.packaged.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.poc.InventoryManagement.utils.Constants.ROLE_MANAGER;
 
 @Service
 public class DashboardService {
@@ -23,7 +26,11 @@ public class DashboardService {
     }
 
 
-    public List<Product> getAssignedProductsForUser() {
+    public List<Product> getAssignedProductsForUser(){
+        return userService.isUserHasRole(ROLE_MANAGER) ? productRepository.findAll() : getAssignedProductsForUserRole() ;
+    }
+
+    public List<Product> getAssignedProductsForUserRole() {
         List<ProductAssignment> result = getCurrentlyAssignedProductsForUser();
         List<Long> productIdList = result.stream().map(ProductAssignment::getProductId).collect(Collectors.toList());
         return productRepository.findByProductIds(productIdList);

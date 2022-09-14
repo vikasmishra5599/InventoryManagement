@@ -85,7 +85,7 @@ function UserAvatar(props) {
                 onClose={handleClose}
             >
                 <MenuItem>{profile.email}</MenuItem>
-                <MenuItem onClick={handleLogoff}>Logoff</MenuItem>
+                <MenuItem onClick={handleLogoff}>Logout</MenuItem>
             </Menu>
         </div>
     )

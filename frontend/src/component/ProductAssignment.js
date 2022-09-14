@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {
     Button,
-    Dialog,
+    Dialog, DialogActions, DialogContent,
     DialogTitle,
     FormControl,
     InputLabel,
@@ -79,13 +79,14 @@ const ProductAssignment = (props) => {
             {showSuccess && <Success/>}
             <Dialog onClose={onClose} open={open}>
                 <DialogTitle style={{
-                    color: "whitesmoke", backgroundColor: "#1f4fef", display: "flex",
+                    color: "whitesmoke", backgroundColor: "#cf5419", display: "flex",
                     justifyContent: "space-between", alignItems: "center"
                 }}>
                     <Typography sx={{fontSize: "1.2rem"}}> Assign a product to someone</Typography>
                 </DialogTitle>
                 {showError && <Alert/>}
                 {showSuccess && <Success/>}
+                <DialogContent>
                 <form onSubmit={handleAssignment}>
                     <FormControl fullWidth sx={{m: 1}} variant="standard" id="first-name-input-id">
                         <InputLabel id="product-assignment">Select Users</InputLabel>
@@ -102,8 +103,9 @@ const ProductAssignment = (props) => {
                         ))}
                         </Select>
                     </FormControl>
-                    <TextField id={'product-assignment-text'} label={"Comments"} name={"comments"}
+                    <TextField  fullWidth sx={{m: 1}} id={'product-assignment-text'} label={"Comments"} name={"comments"}
                                value={assignmentForm.comments} onChange={handleInputChange}/>
+                    <DialogActions>
                     <Button variant="contained" type="submit" color="primary">
                         Assign
                     </Button>
@@ -111,7 +113,9 @@ const ProductAssignment = (props) => {
                             onClick={handleClose}>
                         Close
                     </Button>
+                    </DialogActions>
                 </form>
+                </DialogContent>
             </Dialog>
         </div>
     );

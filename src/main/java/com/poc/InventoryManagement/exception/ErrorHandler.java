@@ -40,6 +40,10 @@ public class ErrorHandler extends ResponseEntityExceptionHandler implements Auth
         return new ResponseEntity<>( new ResponseWithMessage<>(ex.getMessage(), new BaseTimeStamp()),HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ResponseWithMessage<BaseTimeStamp>>  handleUnAuthorizedExceptionException(BadRequestException ex) {
+        return new ResponseEntity<>( new ResponseWithMessage<>(ex.getMessage(), new BaseTimeStamp()),HttpStatus.UNAUTHORIZED);
+    }
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         var status = HttpStatus.UNAUTHORIZED;

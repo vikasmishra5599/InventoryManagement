@@ -33,8 +33,7 @@ const Dashboard = () => {
 
     return <>
         {showError && <Alert />}
-        {loading && <CircularProgress />}
-        <CustomizedTables rows={tableData}/>
+        <CustomizedTables rows={tableData} isLoading={loading}/>
     </>
 }
 export default Dashboard;

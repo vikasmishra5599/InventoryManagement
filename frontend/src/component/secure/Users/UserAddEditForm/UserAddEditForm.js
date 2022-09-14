@@ -83,10 +83,10 @@ export function UserAddEditForm(props) {
         <div>
             <Dialog open={isOpen} onClose={onClose}>
                 <DialogTitle style={{
-                    color: "whitesmoke", backgroundColor: "#1f4fef", display: "flex",
+                    color: "whitesmoke", backgroundColor:"#cf5419", display: "flex",
                     justifyContent: "space-between", alignItems: "center"
                 }}>
-                    <Typography sx={{fontSize: "1.2rem"}}> {isEdit ? 'Edit User' : 'Register User'}</Typography>
+                    <Typography sx={{fontSize: "1.2rem"}}> {isEdit ? `Edit User ${user.firstName} ${user.lastName}` : 'Register User'}</Typography>
                     <CloseRounded onClick={handleClickCloseIcon} sx={{paddingTop: "5px", fontSize: "2rem"}}/>
                 </DialogTitle>
                 <DialogContent>

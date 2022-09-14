@@ -57,9 +57,9 @@ function ForgotPasswordCard(props) {
         justifyContent={"center"}
         style={{minHeight: '100vh'}}>
         <Card sx={{
-            minWidth: 300, maxWidth: 380, background: "rgba(235, 235, 245, 0.8)", textAlign: "center", width: 350,
+            minWidth: 300, maxWidth: 380, textAlign: "center", width: 350,
         }}>
-            <CardHeader title="Forgot Password" style={{backgroundColor:"#0f248d" , color : "#f1f4f6", fontSize :"1.2rem"}}/>
+            <CardHeader title="Forgot Password" style={{backgroundColor:"#cf5419" , color : "#f0f0f0" , fontSize:"1.1rem"}}/>
             <CardContent>
                 <form>
                     <Grid container rowSpacing={3} style={{justifyContent:"center"}}>
@@ -73,7 +73,7 @@ function ForgotPasswordCard(props) {
                             />
                         </Grid>
                         <Grid item >
-                            <Button variant="contained" onClick={onClickResetPassword}>Send Reset Link</Button>
+                            <Button variant="contained" color="unSecure" onClick={onClickResetPassword}>Send Reset Link</Button>
                         </Grid>
                     </Grid>
                 </form>

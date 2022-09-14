@@ -1,4 +1,4 @@
-import {call, put, takeLatest} from "@redux-saga/core/effects";
+import {call, delay, put, takeLatest} from "@redux-saga/core/effects";
 import * as actionTypes from "../actionTypes";
 import {isEmpty} from "lodash";
 import {enqueueSnackbar, saveResponseUsers, saveUserResponseAfterRegisterOrUpdate} from "../action";
@@ -29,6 +29,7 @@ export const getAllAuthUserWatcher=function*(){
 
 function* getAllAuthUsers() {
     try{
+        yield delay(1000);
         const response = yield call(getAllAuthUsersRest);
         if (!isEmpty(response.data)){
             yield put (saveResponseUsers(response.data));

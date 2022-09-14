@@ -44,21 +44,25 @@ class ajax {
                     console.log(`401 Authorization Error !`);
                     store.dispatch({
                         type: actionTypes.ENQUEUE_SNACKBAR,
-                        notification: enqueueAPPSnackbar('Authorization failure . App will Logout ', 'error')
+                        notification: enqueueAPPSnackbar('Authorization failure . Application will Logout ', 'error')
                     });
                     if (getToken().length > 0){
                         store.dispatch({
                             type: actionTypes.LOGOFF
                         });
                     }
+                }else {
+                    throw error;
                 }
 
-                // rethrow so callers can handle their errors
-                throw error;
             } else if (error.message) {
                 // handle errors that do not have a response
                 // the scenario that uncovered the need for this was caused by an ad blocker when making an API call
                 console.log(`Error: ${error.message}`);
+                store.dispatch({
+                    type: actionTypes.ENQUEUE_SNACKBAR,
+                    notification: enqueueAPPSnackbar('Unknown Error occured !'+error.message, 'error')
+                });
             }
         });
     }

@@ -1,7 +1,6 @@
 import {connect} from "react-redux";
 import { Edit} from "@mui/icons-material";
 import {deActivateUser, setAddEditUserDialogOpen} from "../../../../redux/action";
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import CustomMUITable from "../../../../common/Table/CustomMUITable";
 
 const mapStateToProps=(store)=>({
@@ -20,7 +19,7 @@ const mergeProps=(stateProps, dispatchProps, ownProps)=>{
         ...stateProps,
         ...dispatchProps,
         ...ownProps,
-        defaultSort:"email",
+        defaultSort:"id",
         columns:[
             {
                 id: 'firstName',
@@ -61,21 +60,13 @@ const mergeProps=(stateProps, dispatchProps, ownProps)=>{
         useDensePadding : true,
         tableWidth:1200,
         rowActions:[
-           /* {
-                icon:<DeleteRoundedIcon sx={{color:"red"}} />,
-                onClickAction: (rowData)=> {
-                    console.log(` Delete row data `, rowData);
-                    deActivateUser(rowData);
-                },
-            },*/
             {
                 disabled: (rowData) =>(rowData.id === stateProps.profile.id),
-                icon: <Edit sx={{color:"#121193"}}/>,
+                icon: <Edit sx={{color:"#ec1c27"}}/>,
                 onClickAction: (rowData)=> {
                     dispatchProps.setAddEditUserDialogOpen(true, true, rowData);
                 },
             }
-
         ]
     });
 }

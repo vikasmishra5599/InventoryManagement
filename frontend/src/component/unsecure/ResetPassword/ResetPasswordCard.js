@@ -78,7 +78,7 @@ function ResetPasswordCard(props) {
         <Card sx={{
             minWidth: 275, maxWidth: 300, background: "rgba(235, 235, 245, 0.8)", textAlign: "center", width: 330,
         }}>
-            <CardHeader title={'Reset Password'} style={{backgroundColor:"#0f248d" , color : "#f1f4f6"}}/>
+            <CardHeader title={'Reset Password'} style={{ backgroundColor:"#cf5419" , color : "#f0f0f0" , fontSize:"1.2rem"}}/>
             <CardContent>
                 <form>
                     <Grid container rowSpacing={2} style={{justifyContent: "center"}}>
@@ -105,7 +105,7 @@ function ResetPasswordCard(props) {
                             />
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" id="save-password" onClick={onSavePasswordClick}> Save Password </Button>
+                            <Button variant="contained" color="unSecure" id="save-password" onClick={onSavePasswordClick}> Save Password </Button>
                         </Grid>
                     </Grid>
                 </form>

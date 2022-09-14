@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Alert from "../../../common/Alert";
-import {CircularProgress} from "@mui/material";
 import CustomMUITable from "../../../common/Table/CustomMUITable";
 import ProductAssignment from "../../ProductAssignment";
 import PersonAddAlt1RoundedIcon from '@mui/icons-material/PersonAddAlt1Rounded';
 import {getAuthHeader} from "../../../Utils/TokenUtils";
+import ListIcon from '@mui/icons-material/List';
+import Tooltip from "@mui/material/Tooltip";
+import ProductAuditDialog from "./ProductAudit/ProductAuditDialog";
 
 export default function DashboardContainer (props) {
     const [tableData, setTableData] = useState([]);
@@ -14,12 +16,18 @@ export default function DashboardContainer (props) {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = React.useState(false);
     const [assignProductId,setAssignProductId] = useState(null);
+    const [auditOpen, setAuditOpen] = React.useState(false);
+    const [auditProductId,setAuditProductId] = useState(null);
 
     const handleClose=()=>{
         setOpen(false);
         setAssignProductId(null);
     }
 
+    const handleAuditClose=()=>{
+        setAuditOpen(false);
+        setAuditProductId(null);
+    }
 
     useEffect(() => {
         fetchListData();
@@ -73,7 +81,7 @@ export default function DashboardContainer (props) {
             id: 'name',
             numeric: false,
             disablePadding: false,
-            label: 'Name',
+            label: 'Product Name',
         },
         {
             id: 'serialNumber',
@@ -124,24 +132,34 @@ export default function DashboardContainer (props) {
             label: 'Status',
         },
     ];
-      const title="Inventory Status Dashboard";
-      const customRowsPerPage = [7,10];
+      const title="Dashboard";
+      const customRowsPerPage = [10,15];
       const rowSelectCheckBox = false;
       const  useDensePadding = true;
       const tableWidth = 1200;
-      const  rowActions = [
+    const rowActions = [
         {
-            icon:<PersonAddAlt1RoundedIcon sx={{color:"green"}} />,
-            onClickAction: (rowData)=> {
+            icon: <Tooltip title="Assign" placement="top">
+                <PersonAddAlt1RoundedIcon sx={{color: "green"}}/>
+            </Tooltip>,
+            onClickAction: (rowData) => {
                 setAssignProductId(rowData.id);
                 setOpen(true);
             },
         },
+        {
+            icon: <Tooltip title="Audit" placement="top">
+                <ListIcon sx={{color: "green"}}/>
+            </Tooltip>,
+            onClickAction: (rowData) => {
+                setAuditProductId(rowData.id);
+                setAuditOpen(true);
+            }
+        }
     ]
 
     return <>
         {showError && <Alert />}
-        {loading && <CircularProgress />}
         <CustomMUITable
             data={tableData}
             defaultSort={defaultSort}
@@ -152,7 +170,9 @@ export default function DashboardContainer (props) {
             useDensePadding={useDensePadding}
             tableWidth={tableWidth}
             rowActions={rowActions}
+            isLoading={loading}
         />
         <ProductAssignment users={assignmentUsers} open={open} onClose={handleClose} productId={assignProductId}/>
+        <ProductAuditDialog isOpen={auditOpen} onClose={handleAuditClose}  productId={auditProductId}/>
     </>
 }

@@ -118,6 +118,13 @@ public class UserService {
         return getAuthUserByEmail(name);
     }
 
+    public boolean isUserHasRole(String role){
+        List<String> roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().
+                map(n-> n.getAuthority()).toList();
+        return roles.contains(role);
+    }
+
+
     public List<AuthUserResponse> getAllAssignmentAuthUsers() {
         List<AuthUser> userResponse = authUserRepository.findAllUsersWithoutLoggedInUser(getAuthUserDetails().id());
         List<AuthUserResponse> response = userResponse.stream().map(this::authUserMapper).collect(Collectors.toList());

@@ -1,6 +1,6 @@
 import { all } from '@redux-saga/core/effects';
 import {loginRequestWatcher, logoffRequestWatcher, saveResetPasswordWatcher} from "./LoginSaga";
-import {forgotPassworsRequestWatcher} from "./ResetPasswordSaga";
+import {forgotPasswordRequestWatcher} from "./ResetPasswordSaga";
 import {bootStrapRequestWatcher} from "./BootStrapSaga";
 import {getAllAuthUserWatcher, registerUserWatcher, updateUserWatcher} from "./UsersSaga";
 
@@ -10,7 +10,7 @@ export default function* rootSaga() {
         loginRequestWatcher(),
         logoffRequestWatcher(),
         saveResetPasswordWatcher(),
-        forgotPassworsRequestWatcher(),
+        forgotPasswordRequestWatcher(),
         bootStrapRequestWatcher(),
         registerUserWatcher(),
         getAllAuthUserWatcher(),

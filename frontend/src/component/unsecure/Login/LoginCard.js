@@ -54,6 +54,8 @@ function LoginCard(props) {
         history.push('/forgotpassword');
     }
 
+    // background: "rgba(235, 235, 245, 0.8)",
+
     return (<Grid
         container
         spacing={2}
@@ -63,9 +65,9 @@ function LoginCard(props) {
         justifyContent={"center"}
         style={{minHeight: '100vh'}}>
         <Card sx={{
-            minWidth: 275, maxWidth: 300, background: "rgba(235, 235, 245, 0.8)", textAlign: "center", width: 330,
+            minWidth: 275, maxWidth: 300, textAlign: "center", width: 330,
         }}>
-            <CardHeader title={'Allegion InventT'} style={{backgroundColor:"#0f248d" , color : "#c2e6f6" , fontSize:"1.2rem"}}/>
+            <CardHeader title={'Allegion Inventory'} style={{ backgroundColor:"#cf5419" , color : "#f0f0f0" , fontSize:"1.2rem"}}/>
             <CardContent>
                 <form>
                     <Grid container rowSpacing={2} style={{justifyContent: "center"}}>
@@ -89,7 +91,7 @@ function LoginCard(props) {
                             />
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" id="login-button" onClick={onLoginButtonClick}> Login </Button>
+                            <Button variant="contained" color="unSecure" id="login-button" onClick={onLoginButtonClick}> Login </Button>
                         </Grid>
                     </Grid>
                 </form>

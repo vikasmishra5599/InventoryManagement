@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import TableLoading from "./TableLoading";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -186,9 +187,12 @@ export default function CustomMUITable(props) {
         useDensePadding,
         columns,
         defaultSort,
+        isLoading,
+        disableTitle,
+        defaultOrder
     }= props;
 
-    const [order, setOrder] = React.useState('asc');
+    const [order, setOrder] = React.useState(defaultOrder? defaultOrder: 'asc');
     const [orderBy, setOrderBy] = React.useState(defaultSort? defaultSort : columns[0].id);
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
@@ -247,7 +251,7 @@ export default function CustomMUITable(props) {
     return (
         <Box sx={{display: 'flex' , padding: '5px' , paddingRight : '20px', textShadow: '0px 0px 0px black'}}>
             <Paper sx={{ width: '100%' }}>
-                <EnhancedTableToolbar numSelected={selected.length} title={title} selected={selected}/>
+                {(!disableTitle)&&<EnhancedTableToolbar numSelected={selected.length} title={title} selected={selected}/>}
                 <TableContainer>
                     <Table
                         sx={{  width: tableWidth ? tableWidth : 500}}
@@ -266,6 +270,7 @@ export default function CustomMUITable(props) {
                             columns={columns}
                         />
                         <TableBody>
+                            <TableLoading renderLoading={isLoading}/>
                             {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
                             {stableSort(data, getComparator(order, orderBy))
@@ -301,7 +306,7 @@ export default function CustomMUITable(props) {
                                                 </TableCell>
                                             ))}
 
-                                            {rowActions.length > 0 ? <TableCell align="center" sx={{padding:'0px'}}>
+                                            {rowActions?.length > 0 ? <TableCell align="center" sx={{padding:'0px'}}>
                                                 {rowActions.map((rowAction,index) =>
                                                     <IconButton key={`action-key-${index+1}`} onClick={() => rowAction.onClickAction(row)} disabled={rowAction.disabled ? rowAction.disabled(row) : false}>
                                                       {rowAction.icon ? rowAction.icon:[]}

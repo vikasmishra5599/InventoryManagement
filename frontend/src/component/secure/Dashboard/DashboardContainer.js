@@ -8,8 +8,11 @@ import {getAuthHeader} from "../../../Utils/TokenUtils";
 import ListIcon from '@mui/icons-material/List';
 import Tooltip from "@mui/material/Tooltip";
 import ProductAuditDialog from "./ProductAudit/ProductAuditDialog";
+import {connect} from "react-redux";
 
-export default function DashboardContainer (props) {
+function DashboardContainer (props) {
+
+    const {profile} = props;
     const [tableData, setTableData] = useState([]);
     const [assignmentUsers, setAssignmentUsers] = useState([]);
     const [showError, setShowError] = useState(false);
@@ -18,6 +21,7 @@ export default function DashboardContainer (props) {
     const [assignProductId,setAssignProductId] = useState(null);
     const [auditOpen, setAuditOpen] = React.useState(false);
     const [auditProductId,setAuditProductId] = useState(null);
+    const isManager = profile.roles?.includes("ROLE_MANAGER");
 
     const handleClose=()=>{
         setOpen(false);
@@ -170,7 +174,7 @@ export default function DashboardContainer (props) {
             rowSelectCheckBox={rowSelectCheckBox}
             useDensePadding={useDensePadding}
             tableWidth={tableWidth}
-            rowActions={rowActions}
+            rowActions={isManager ? rowActions : []}
             isLoading={loading}
         />
         </div>
@@ -178,3 +182,9 @@ export default function DashboardContainer (props) {
         <ProductAuditDialog isOpen={auditOpen} onClose={handleAuditClose}  productId={auditProductId}/>
     </>
 }
+
+const mapStateToProps=(store)=>({
+    profile: store.UserProfile.profile,
+})
+
+export default connect(mapStateToProps,null)(DashboardContainer);

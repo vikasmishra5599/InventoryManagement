@@ -82,7 +82,7 @@ const ProductAssignment = (props) => {
                     color: "whitesmoke", backgroundColor: "#cf5419", display: "flex",
                     justifyContent: "space-between", alignItems: "center"
                 }}>
-                    <Typography sx={{fontSize: "1.2rem"}}> Assign a product to someone</Typography>
+                    <Typography sx={{fontSize: "1.2rem"}}> Assign product to a user</Typography>
                 </DialogTitle>
                 {showError && <Alert/>}
                 {showSuccess && <Success/>}
@@ -91,6 +91,7 @@ const ProductAssignment = (props) => {
                     <FormControl fullWidth sx={{m: 1}} variant="standard" id="first-name-input-id">
                         <InputLabel id="product-assignment">Select Users</InputLabel>
                         <Select
+                            required={true}
                             labelId="product-assignment-label"
                             id="product-assignment-select"
                             name={"assignedTo"}

@@ -59,8 +59,10 @@ function DashboardContainer (props) {
     }
 
     useEffect(() => {
-        fetchAssignmentUsers();
-    }, [])
+        if(open) {
+            fetchAssignmentUsers();
+        }
+    }, [open])
 
     const fetchAssignmentUsers = async () => {
         setLoading(true);
@@ -94,16 +96,10 @@ function DashboardContainer (props) {
             label: 'Serial No',
         },
         {
-            id: 'owner',
-            numeric: false,
-            disablePadding: true,
-            label: 'Owner',
-        },
-        {
             id: 'description',
             numeric: false,
             disablePadding: true,
-            label: 'description',
+            label: 'Description',
         },
         {
             id: 'type',
@@ -165,6 +161,7 @@ function DashboardContainer (props) {
     return <>
         {showError && <Alert />}
         <CustomMUITable
+            id={'dashboard-container-table'}
             data={tableData}
             defaultSort={defaultSort}
             columns={columns}

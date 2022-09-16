@@ -1,22 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: inventory-mgmnt-app
+  name: inventory-management-app
 spec:
   selector:
     matchLabels:
-      app: inventory-mgmnt-app
+      app: inventory-management-app
   replicas: 2
   template:
     metadata:
       labels:
-        app: inventory-mgmnt-app
+        app: inventory-management-app
     spec:
       containers:
-        - name: inventory-mgmnt-app
-          image: inventorymanagement:latest
+        - name: imsapp
+          image: myvikasregistry.azurecr.io/sample/hello:9
           ports:
-            - containerPort: 8080
-              name: server
             - containerPort: 8081
-              name: management

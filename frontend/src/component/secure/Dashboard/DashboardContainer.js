@@ -164,7 +164,6 @@ function DashboardContainer (props) {
 
     return <>
         {showError && <Alert />}
-        <div style={{marginTop :"60px"}}>
         <CustomMUITable
             data={tableData}
             defaultSort={defaultSort}
@@ -177,7 +176,6 @@ function DashboardContainer (props) {
             rowActions={isManager ? rowActions : []}
             isLoading={loading}
         />
-        </div>
         <ProductAssignment users={assignmentUsers} open={open} onClose={handleClose} productId={assignProductId}/>
         <ProductAuditDialog isOpen={auditOpen} onClose={handleAuditClose}  productId={auditProductId}/>
     </>

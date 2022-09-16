@@ -20,7 +20,7 @@ function AppSecure(props){
 
 
     return(
-        <div className="InventoryManagementApp">
+        <div style={{marginTop :"70px"}} className="InventoryManagementApp">
             <SideNavigation/>
         </div>
     );

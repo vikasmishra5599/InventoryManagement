@@ -99,6 +99,7 @@ function ProductAuditDialog(props){
                     <CustomMUITable
                         data={tableData}
                         defaultSort={'assignedStartDate'}
+                        defaultOrder={'desc'}
                         columns={columns}
                         title={"Product Assignment Audit"}
                         customRowsPerPage={[5,10]}

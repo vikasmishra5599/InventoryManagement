@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: inventory-management-app
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
         - name: imsapp
-          image: myvikasregistry.azurecr.io/sample/hello:9
+          image: imscr.azurecr.io/inventory-management:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8081

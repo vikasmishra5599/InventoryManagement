@@ -1,6 +1,6 @@
 package com.poc.InventoryManagement.controller;
 
-import com.poc.InventoryManagement.entity.Product;
+import com.poc.InventoryManagement.dto.DashboardResponse;
 import com.poc.InventoryManagement.security.Annotations.AuthUserRole;
 import com.poc.InventoryManagement.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class DashboardController {
 
     @GetMapping("/")
     @AuthUserRole
-    public List<Product> getAssignedProducts() {
+    public List<DashboardResponse> getAssignedProducts() {
         return dashboardService.getAssignedProductsForUser();
     }
 

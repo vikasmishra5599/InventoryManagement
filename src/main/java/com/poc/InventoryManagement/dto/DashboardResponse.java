@@ -1,16 +1,9 @@
 package com.poc.InventoryManagement.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.time.ZonedDateTime;
 
-@Getter
-@Setter
-public class DashboardResponse {
-    private String productId;
-    private String productName;
-    private String serialNo;
-    private String owner;
-    private String teamLeader;
-    private String status;
-    private String location;
+
+public record DashboardResponse(Long id,String name,String description,String assignedTo,String type,String serialNumber,String location,String comments,String trackingId,String status,ZonedDateTime addedTime) {
+
+
 }

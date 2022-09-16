@@ -5,3 +5,8 @@
 /src/main/resources/static/static/
 /.idea/
 /src/main/resources/static/static/js/
+/frontend/node/node
+/frontend/node/npx.cmd
+/frontend/node/npm.cmd
+/frontend/node/npx
+/frontend/node/npm

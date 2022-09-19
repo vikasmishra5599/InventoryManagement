@@ -28,9 +28,7 @@ export function UserAddEditForm(props) {
             ...values,
         }
         handleSaveUpdate(requestValues);
-        /*Object.keys(values).forEach(key => {
-            form.change(key, undefined) && form.resetFieldState(key)
-        });*/
+        setAddEditUserDialogOpen(false, isEdit, undefined);
     };
 
     useEffect(()=>{
@@ -41,7 +39,6 @@ export function UserAddEditForm(props) {
 
     useEffect(()=>{
         if (isEdit) {
-            console.log(`is Edit `, user.roles)
                 setInitialFormValue({
                     ...user,
                     isManager:user?.roles?.includes('ROLE_MANAGER')
@@ -69,7 +66,7 @@ export function UserAddEditForm(props) {
         }else if (!checkValidEmail(values.email)){
             validateObj.email= `Email is not valid `
         }
-        if (!isEmpty(validateObj))return validateObj;
+        if (!isEmpty(validateObj)) return validateObj;
     }
 
     const onClose = (event, reason) => {
@@ -86,7 +83,7 @@ export function UserAddEditForm(props) {
                     color: "whitesmoke", backgroundColor:"#cf5419", display: "flex",
                     justifyContent: "space-between", alignItems: "center"
                 }}>
-                    <Typography sx={{fontSize: "1.2rem"}}> {isEdit ? `Edit User ${user.firstName} ${user.lastName}` : 'Register User'}</Typography>
+                    <Typography sx={{fontSize: "1.2rem"}}> {isEdit && isOpen ? `Edit User ${user.firstName} ${user.lastName}` : 'Register User'}</Typography>
                     <CloseRounded onClick={handleClickCloseIcon} sx={{paddingTop: "5px", fontSize: "2rem"}}/>
                 </DialogTitle>
                 <DialogContent>
@@ -113,13 +110,13 @@ export function UserAddEditForm(props) {
                                     <TextField label="Phone No" name="phoneNumber"
                                                helperText={"Phone Number"}/>
                                 </FormControl>
-                                <FormControl fullWidth sx={{m: 1}} variant="standard">
+                                <FormControl fullWidth sx={{m: 1}} >
                                     <Switches
                                         id="is-manager-switch-id"
                                         name="isManager"
-                                        label="isManager"
-                                        key='id-set-serial-number-input'
-                                        data={{ label: 'isManager', value: 'isManager' }}
+                                        label="Manager Role"
+                                        key='id-set-manager-role'
+                                        data={{ value: 'isManager' }}
                                     />
                                 </FormControl>
 

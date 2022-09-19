@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.poc.InventoryManagement.utils.Constants.UNAUTHORIZED;
+
 @RestControllerAdvice
 @AllArgsConstructor
 public class ErrorHandler extends ResponseEntityExceptionHandler implements AuthenticationEntryPoint, AccessDeniedHandler {
@@ -41,8 +43,8 @@ public class ErrorHandler extends ResponseEntityExceptionHandler implements Auth
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ResponseWithMessage<BaseTimeStamp>>  handleUnAuthorizedExceptionException(BadRequestException ex) {
-        return new ResponseEntity<>( new ResponseWithMessage<>(ex.getMessage(), new BaseTimeStamp()),HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<ResponseWithMessage<BaseTimeStamp>>  handleUnAuthorizedExceptionException(AuthenticationException ex) {
+        return new ResponseEntity<>( new ResponseWithMessage<>(UNAUTHORIZED, new BaseTimeStamp()),HttpStatus.UNAUTHORIZED);
     }
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {

@@ -19,12 +19,10 @@ const mapDispatchToProps = {
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
     return ({
         ...ownProps, ...stateProps, ...dispatchProps,
-        testValue: 'this is test',
         handleCancel: () => {
             dispatchProps.setAddEditUserDialogOpen(false, false, undefined)
         },
         handleSaveUpdate: (values) => {
-            console.log (values , ' is edit ', stateProps)
             if (stateProps.isEdit) {
                 dispatchProps.saveEditUser(values);
             }else{

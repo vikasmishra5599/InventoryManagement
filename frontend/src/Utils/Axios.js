@@ -41,20 +41,18 @@ class ajax {
             if (error.response) {
                 if (error.response.status === 401) {
                     // handle unauthorized status centrally, clear cookies and go to login page
-                    console.log(`401 Authorization Error !`);
-                    store.dispatch({
-                        type: actionTypes.ENQUEUE_SNACKBAR,
-                        notification: enqueueAPPSnackbar('Authorization failure . Application will Logout ', 'error')
-                    });
-                    if (getToken().length > 0){
-                        store.dispatch({
-                            type: actionTypes.LOGOFF
-                        });
-                    }
-                }else {
-                    throw error;
+                        if (bearerToken) {
+                            store.dispatch({
+                                type: actionTypes.ENQUEUE_SNACKBAR,
+                                notification: enqueueAPPSnackbar('Authorization Error.Application will Logout ', 'error')
+                            });
+                            store.dispatch({
+                                type: actionTypes.LOGOFF
+                            });
+                        }
+                }else{
+                    return {error:'Login error'}
                 }
-
             } else if (error.message) {
                 // handle errors that do not have a response
                 // the scenario that uncovered the need for this was caused by an ad blocker when making an API call

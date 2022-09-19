@@ -2,6 +2,7 @@ import {connect} from "react-redux";
 import { Edit} from "@mui/icons-material";
 import {deActivateUser, setAddEditUserDialogOpen} from "../../../../redux/action";
 import CustomMUITable from "../../../../common/Table/CustomMUITable";
+import Tooltip from "@mui/material/Tooltip";
 
 const mapStateToProps=(store)=>({
     data:store.Users.users,
@@ -56,13 +57,16 @@ const mergeProps=(stateProps, dispatchProps, ownProps)=>{
         ],
         title:"Users",
         customRowsPerPage : [7,10],
-        rowSelectCheckBox : true,
+        rowSelectCheckBox : false,
         useDensePadding : true,
         tableWidth:1200,
         rowActions:[
             {
                 disabled: (rowData) =>(rowData.id === stateProps.profile.id),
-                icon: <Edit sx={{color:"#ec1c27"}}/>,
+                icon: (rowData) => (rowData.id === stateProps.profile.id) ?
+                    <Edit sx={{color :"grey"}}/> : <Tooltip title="Edit" placement="top">
+                        <Edit sx={{color :"green"}}/>
+                        </Tooltip>,
                 onClickAction: (rowData)=> {
                     dispatchProps.setAddEditUserDialogOpen(true, true, rowData);
                 },

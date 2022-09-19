@@ -15,14 +15,16 @@ function* loginRequest(action){
     const { username, password } = action;
     try{
         const response = yield call(LoginRequest.login, username, password);
-        if (!isEmpty(response.data && response.data.jwt )){
+        if (!isEmpty(response?.data && response?.data?.jwt )){
             if (response.data.jwt){
                 saveToken(response.data.jwt,response.data.expiration);
                 yield put(saveProfile({user: response.data.username, roles: response.data.authorities}));
             }
+        }else{
+            yield put(enqueueSnackbar(enqueueAPPSnackbar('User Name or Password Invalid!', 'error')));
         }
     } catch (error) {
-        yield put (enqueueSnackbar (enqueueAPPSnackbar('Login Error !!', 'error')));
+            yield put(enqueueSnackbar(enqueueAPPSnackbar('Unknown Error. Contact support', 'error')));
     }
 };
 

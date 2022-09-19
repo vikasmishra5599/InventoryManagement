@@ -20,8 +20,9 @@ import {Route, Switch, useHistory} from "react-router-dom";
 import ProductRegistration from "../../ProductRegistration";
 import Users from "../Users/Users";
 import DashboardContainer from "../Dashboard/DashboardContainer";
+import HASANYROLE from "../../../common/HOC/HASANYROLE";
 
-const drawerWidth = 180;
+const drawerWidth = 220;
 
 const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -100,28 +101,30 @@ function SideNav(props) {
                 <Divider/>
                 <List>
                     {sideNavigation.map((menu, index) => (
-                        <ListItem key={index} disablePadding sx={{display: 'block'}}
-                                  onClick={() => routerPush(menu.path)}>
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: isOpen ? 'initial' : 'center',
-                                    px: 2.5,
-                                    backgroundColor: isCurrentPath(menu.path) ? 'rgb(0 0 0 / 12%)' : []
-                                }}
-                            >
-                                <ListItemIcon
+                        <HASANYROLE hasAnyRole={menu.hasAnyRole}>
+                            <ListItem key={index+1} disablePadding sx={{display: 'block'}}
+                                      onClick={() => routerPush(menu.path)}>
+                                <ListItemButton
                                     sx={{
-                                        minWidth: 0,
-                                        mr: isOpen ? 3 : 'auto',
-                                        justifyContent: 'center',
+                                        minHeight: 48,
+                                        justifyContent: isOpen ? 'initial' : 'center',
+                                        px: 2.5,
+                                        backgroundColor: isCurrentPath(menu.path) ? "action.hover" : []
                                     }}
                                 >
-                                    {menu.icon}
-                                </ListItemIcon>
-                                <ListItemText primary={menu.name} sx={{opacity: isOpen ? 1 : 0}}/>
-                            </ListItemButton>
-                        </ListItem>
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: isOpen ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        {menu.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={menu.name} sx={{opacity: isOpen ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        </HASANYROLE>
                     ))}
                 </List>
 
@@ -132,9 +135,13 @@ function SideNav(props) {
             <div>
                 {/*<BreadCrumb/>*/}
                 <Switch>
-                    <Route exact path="/"> <DashboardContainer/> </Route>
-                    <Route exact path="/product"> <ProductRegistration/> </Route>
-                    <Route exact path="/users"> <Users/> </Route>
+                    {sideNavigation.map((routeMenu, routeIndex) => (
+                            <Route key={`route-${routeIndex+1}`} exact path={routeMenu.path} >
+                                <HASANYROLE key={`route-role-${routeIndex+1}`} hasAnyRole={routeMenu.hasAnyRole}>
+                                    {routeMenu.component}
+                                </HASANYROLE>
+                            </Route>
+                    ))}
                 </Switch>
             </div>
         </Box>

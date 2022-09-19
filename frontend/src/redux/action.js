@@ -19,7 +19,6 @@ export const login =(username, password)=>({
 
 export const enqueueSnackbar = (notification) => {
     const key = notification.options && notification.options.key;
-    console.log('key @ enqueue snackbar ', key);
     return {
         type: actionTypes.ENQUEUE_SNACKBAR,
         notification: {

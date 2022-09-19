@@ -1,8 +1,9 @@
-import {Button, Card, CardContent, CardHeader, Grid, Link, TextField} from "@mui/material";
+import {Button, Card, CardContent, CardHeader, Grid, Link, TextField, Typography} from "@mui/material";
 import {useState} from "react";
 import {isEmpty} from "lodash";
 import {checkValidEmail} from "../../../Utils/Validation/Validation";
 import {useHistory} from "react-router-dom";
+import * as React from "react";
 
 
 function ForgotPasswordCard(props) {
@@ -59,12 +60,12 @@ function ForgotPasswordCard(props) {
         <Card sx={{
             minWidth: 300, maxWidth: 380, textAlign: "center", width: 350,
         }}>
-            <CardHeader title="Forgot Password" style={{backgroundColor:"#cf5419" , color : "#f0f0f0" , fontSize:"1.1rem"}}/>
+            <CardHeader title={<Typography variant="h6" sx={{fontWeight:"400"}}>Forgot Password</Typography>} style={{backgroundColor:"#cf5419" , color : "#f0f0f0" , fontSize:"1.1rem"}}/>
             <CardContent>
                 <form>
                     <Grid container rowSpacing={3} style={{justifyContent:"center"}}>
                         <Grid item>
-                            <TextField
+                            <TextField sx={{width: '32ch' }}
                                 error={!(!emailError)}
                                 id="login-email"
                                 label="Login Email"

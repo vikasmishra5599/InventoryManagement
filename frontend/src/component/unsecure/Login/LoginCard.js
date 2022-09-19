@@ -1,7 +1,9 @@
-import {Button, Card, CardContent, CardHeader, Grid, Link, TextField} from "@mui/material";
+import {Button, Card, CardContent, CardHeader, Grid, Link, TextField, Typography} from "@mui/material";
 import {useState} from "react";
 import * as _ from "lodash";
 import {useHistory} from "react-router-dom";
+import Image from "../../../Assets/Images/ALLE-WHITE.png";
+import * as React from "react";
 
 function LoginCard(props) {
 
@@ -65,14 +67,19 @@ function LoginCard(props) {
         justifyContent={"center"}
         style={{minHeight: '100vh'}}>
         <Card sx={{
-            minWidth: 275, maxWidth: 300, textAlign: "center", width: 330,
+            minWidth: 275, maxWidth: 330, textAlign: "center", width: 330,
         }}>
-            <CardHeader title={'Allegion Inventory'} style={{ backgroundColor:"#cf5419" , color : "#f0f0f0" , fontSize:"1.2rem"}}/>
-            <CardContent>
+            <CardHeader title={
+                 <>
+                    <img src={"/ims"+Image} alt="" id="appbar-logo" style={{padding: "2px 0px 2px 0px", height: "45px" }}/>
+                    <Typography variant="h6" sx={{fontWeight:"600"}}>INVENTORY</Typography>
+                </>}
+                style={{ backgroundColor:"#cf5419" , color : "#f0f0f0" , fontSize:"1.1rem"}}/>
+            <CardContent sx={{paddingTop: "10px"}}>
                 <form>
-                    <Grid container rowSpacing={2} style={{justifyContent: "center"}}>
-                        <Grid item>
-                            <TextField
+                    <Grid container rowSpacing={2} style={{justifyContent: "center",paddingTop:"25px"}}>
+                        <Grid item style={{justifyContent: "center",paddingTop:"25px"}}>
+                            <TextField sx={{width: '32ch' }}
                                 error={!(!error.userNameError)}
                                 id="login-email"
                                 label="Email"
@@ -80,8 +87,8 @@ function LoginCard(props) {
                                 helperText={error.userNameError}
                             />
                         </Grid>
-                        <Grid item>
-                            <TextField
+                        <Grid item style={{justifyContent: "center",paddingTop:"25px"}}>
+                            <TextField sx={{width: '32ch' }}
                                 error={!(!error.passwordError)}
                                 id="login-password"
                                 label="Password"
@@ -90,7 +97,7 @@ function LoginCard(props) {
                                 helperText={error.passwordError}
                             />
                         </Grid>
-                        <Grid item>
+                        <Grid item style={{justifyContent: "center",paddingTop:"25px"}}>
                             <Button variant="contained" color="unSecure" id="login-button" onClick={onLoginButtonClick}> Login </Button>
                         </Grid>
                     </Grid>

@@ -77,8 +77,11 @@ export const theme = createTheme({
       `,
         }
     }, palette: {
-        type: 'light', primary: {
+        type: 'light',
+        primary: {
             main: '#e85814',
+            mainBackground: '#ea8557',
+            contrastText:  '#fff',
         }, secondary: {
             main: '#1654ea',
         }, success: {
@@ -88,12 +91,21 @@ export const theme = createTheme({
         }, info: {
             main: '#0b88f3',
         }, unSecure: {
-            main: '#0d7e16', contrastText: '#fff'
+            main: '#0d7e16',
+            contrastText: '#fff'
+        },
+        tableHeader: {
+            main: 'rgba(255,255,255,0.8)',
+            backgroundColor: '#e85814',
+            color: '#fff',
+        },
+        action:{
+            hover: 'rgb(248,233,233)',
         },
     },
 
     spacing: 8, shape: {
-        borderRadius: 4,
+        borderRadius: 3,
     }, overrides: {
         MuiAppBar: {
             colorInherit: {

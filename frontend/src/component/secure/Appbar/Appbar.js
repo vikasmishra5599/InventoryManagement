@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import UserAvatar from "./UserAvatar/UserAvatar";
 import {styled} from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
+import Image from "../../../Assets/Images/ALLE-WHITE.png";
 
 const drawerWidth = 240;
 
@@ -47,15 +48,11 @@ function AppBar(props) {
                     aria-label="open drawer"
                     onClick={handleDrawer}
                     edge="start"
-                    sx={{
-                        marginRight: 5,
-                    }}
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Allegion Inventory
-                </Typography>
+                <img src={"/ims"+Image} alt="" id="appbar-logo" style={{padding: "2px 10px 4px 20px", height: "40px" }}/>
+                <Typography variant="h6" sx={{fontWeight:"600", flexGrow: 1 , marginLeft:"25"}}>INVENTORY</Typography>
                 <UserAvatar/>
             </Toolbar>
         </AppBarComp>

@@ -99,8 +99,8 @@ const ProductAssignment = (props) => {
                             value={assignmentForm.assignedTo}
                             label="Select Users"
                             onChange={handleInputChange}
-                        >{users && users.map((user) => (
-                            <MenuItem value={user.id}>{`${user.firstName} ${user.lastName} (${user.email})`}</MenuItem>
+                        >{users && users.map((user,index) => (
+                            <MenuItem key={index+1} value={user.id}>{`${user.firstName} ${user.lastName} (${user.email})`}</MenuItem>
                         ))}
                         </Select>
                     </FormControl>

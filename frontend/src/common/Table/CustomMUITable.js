@@ -1,10 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import {alpha} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, {tableCellClasses} from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
@@ -18,8 +19,29 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { visuallyHidden } from '@mui/utils';
+import {visuallyHidden} from '@mui/utils';
 import TableLoading from "./TableLoading";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        fontWeight:"600",
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -53,26 +75,28 @@ function stableSort(array, comparator) {
 
 function EnhancedTableHead(props) {
 
-    const { onSelectAllClick,
-            order,
-            orderBy,
-            numSelected,
-            rowCount,
-            onRequestSort,
-            enableCheckBox,
-            columns,
-            rowActions} = props;
+    const {
+        onSelectAllClick,
+        order,
+        orderBy,
+        numSelected,
+        rowCount,
+        onRequestSort,
+        enableCheckBox,
+        columns,
+        rowActions
+    } = props;
 
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
 
     return (
-        <TableHead sx={{color:"grey"}}>
-            <TableRow>
-                {enableCheckBox ? <TableCell padding="checkbox">
+        <TableHead sx={{color: "grey"}}>
+            <StyledTableRow sx={{backgroundColor: "primary"}}>
+                {enableCheckBox ? <StyledTableCell padding="checkbox">
                     <Checkbox
-                        color="primary"
+                        color={"tableHeader"}
                         indeterminate={numSelected > 0 && numSelected < rowCount}
                         checked={rowCount > 0 && numSelected === rowCount}
                         onChange={onSelectAllClick}
@@ -80,9 +104,9 @@ function EnhancedTableHead(props) {
                             'aria-label': 'select all rows',
                         }}
                     />
-                </TableCell> : []}
+                </StyledTableCell> : []}
                 {columns.map((column) => (
-                    <TableCell
+                    <StyledTableCell
                         key={column.id}
                         align={column.numeric ? 'right' : 'left'}
                         padding={column.disablePadding ? 'none' : 'normal'}
@@ -100,12 +124,12 @@ function EnhancedTableHead(props) {
                                 </Box>
                             ) : null}
                         </TableSortLabel>
-                    </TableCell>
+                    </StyledTableCell>
                 ))}
                 {rowActions?.length > 0 ?
-                    <TableCell align="center">Actions</TableCell> :[]
+                    <StyledTableCell align="center">Actions</StyledTableCell> : []
                 }
-            </TableRow>
+            </StyledTableRow>
         </TableHead>
     );
 }
@@ -120,13 +144,13 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { numSelected , title , selected } = props;
+    const {numSelected, title, selected, rowSelectCheckBox} = props;
 
     return (
         <Toolbar
             sx={{
-                pl: { sm: 2 },
-                pr: { xs: 1, sm: 1 },
+                pl: {sm: 2},
+                pr: {xs: 1, sm: 1},
                 ...(numSelected > 0 && {
                     bgcolor: (theme) =>
                         alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
@@ -135,7 +159,7 @@ const EnhancedTableToolbar = (props) => {
         >
             {numSelected > 0 ? (
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
+                    sx={{flex: '1 1 100%'}}
                     color="inherit"
                     variant="subtitle1"
                     component="div"
@@ -144,9 +168,9 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
+                    sx={{flex: '1 1 100%'}}
                     variant="h6"
-                    id="tableTitle"
+                    id="primary"
                     component="div"
                 >
                     {title}
@@ -155,16 +179,18 @@ const EnhancedTableToolbar = (props) => {
 
             {numSelected > 0 ? (
                 <Tooltip title="Delete">
-                    <IconButton onClick={()=>{ console.log(' On All selected click ', selected)}}>
-                        <DeleteIcon />
+                    <IconButton onClick={() => {
+                        console.log(' On All selected click ', selected)
+                    }}>
+                        <DeleteIcon/>
                     </IconButton>
                 </Tooltip>
             ) : (
-                <Tooltip title="Filter list">
-                    <IconButton>
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
+                rowSelectCheckBox ? <Tooltip title="Filter list">
+                <IconButton>
+                <FilterListIcon/>
+                </IconButton>
+                </Tooltip> :[]
             )}
         </Toolbar>
     );
@@ -176,7 +202,7 @@ EnhancedTableToolbar.propTypes = {
 
 export default function CustomMUITable(props) {
     const {
-       data,
+        data,
         title,
         customRowsPerPage,
         rowActions,
@@ -190,10 +216,12 @@ export default function CustomMUITable(props) {
         isLoading,
         disableTitle,
         defaultOrder
-    }= props;
+    } = props;
 
-    const [order, setOrder] = React.useState(defaultOrder? defaultOrder: 'asc');
-    const [orderBy, setOrderBy] = React.useState(defaultSort? defaultSort : columns[0].id);
+
+
+    const [order, setOrder] = React.useState(defaultOrder ? defaultOrder : 'asc');
+    const [orderBy, setOrderBy] = React.useState(defaultSort ? defaultSort : columns[0].id);
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(customRowsPerPage?.length > 0 ? customRowsPerPage[0] : 5);
@@ -249,12 +277,14 @@ export default function CustomMUITable(props) {
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
     return (
-        <Box sx={{display: 'flex' , padding: '5px' , paddingRight : '20px', textShadow: '0px 0px 0px black'}}>
-            <Paper sx={{ width: '100%' }}>
-                {(!disableTitle)&&<EnhancedTableToolbar numSelected={selected.length} title={title} selected={selected}/>}
+        <Box sx={{display: 'flex', padding: '5px', paddingRight: '20px', textShadow: '0px 0px 0px black'}}>
+            <Paper sx={{width: '100%'}}>
+                {(!disableTitle) &&
+                    <EnhancedTableToolbar numSelected={selected.length} title={title} selected={selected}
+                                          rowSelectCheckBox={rowSelectCheckBox}/>}
                 <TableContainer>
                     <Table
-                        sx={{  width: tableWidth ? tableWidth : 500}}
+                        sx={{width: tableWidth ? tableWidth : 500}}
                         aria-labelledby="tableTitle"
                         size={useDensePadding ? 'small' : 'medium'}
                     >
@@ -270,7 +300,7 @@ export default function CustomMUITable(props) {
                             columns={columns}
                         />
                         <TableBody>
-                            <TableLoading renderLoading={isLoading}/>
+                            <TableLoading key={'table-loading-key'} renderLoading={isLoading}/>
                             {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
                             {stableSort(data, getComparator(order, orderBy))
@@ -280,50 +310,52 @@ export default function CustomMUITable(props) {
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
-                                        <TableRow
+                                        <StyledTableRow
                                             hover
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={index+1}
+                                            key={index + 1}
                                             selected={isItemSelected}
                                         >
-                                            { rowSelectCheckBox ?
-                                                <TableCell padding="checkbox">
+                                            {rowSelectCheckBox ?
+                                                <StyledTableCell padding="checkbox">
                                                     <Checkbox
                                                         color="primary"
-                                                        onClick={ (event) => rowSelectCheckBox && handleClick(event, row)}
+                                                        onClick={(event) => rowSelectCheckBox && handleClick(event, row)}
                                                         checked={isItemSelected}
                                                         inputProps={{
                                                             'aria-labelledby': labelId,
                                                         }}
                                                     />
-                                                </TableCell> : [] }
+                                                </StyledTableCell> : []}
 
-                                            {columns.map(colDef => (
-                                                <TableCell align={colDef.numeric? "right ":"left"}>
-                                                    { colDef.render ? colDef.render(row) : row[colDef.id]}
-                                                </TableCell>
+                                            {columns.map((colDef, colindex) => (
+                                                <StyledTableCell key={`row-index-${index}column-idx-${colindex}`} align={colDef.numeric ? "right " : "left"}>
+                                                    {colDef.render ? colDef.render(row) : row[colDef.id]}
+                                                </StyledTableCell>
                                             ))}
 
-                                            {rowActions?.length > 0 ? <TableCell align="center" sx={{padding:'0px'}}>
-                                                {rowActions.map((rowAction,index) =>
-                                                    <IconButton key={`action-key-${index+1}`} onClick={() => rowAction.onClickAction(row)} disabled={rowAction.disabled ? rowAction.disabled(row) : false}>
-                                                      {rowAction.icon ? rowAction.icon:[]}
+                                            {rowActions?.length > 0 ? <StyledTableCell align="center" sx={{padding: '0px'}}>
+                                                {rowActions.map((rowAction, index) =>
+                                                    <IconButton key={`action-key-${index + 1}`}
+                                                                onClick={() => rowAction.onClickAction(row)}
+                                                                disabled={rowAction.disabled ? rowAction.disabled(row) : false}>
+                                                        {rowAction.icon ? typeof rowAction.icon === "function" ? rowAction.icon(row) : rowAction.icon : []}
                                                     </IconButton>
                                                 )}
-                                            </TableCell>:[]}
-                                        </TableRow>
+                                            </StyledTableCell> : []}
+                                        </StyledTableRow>
                                     );
                                 })}
                             {emptyRows > 0 && (
-                                <TableRow
+                                <StyledTableRow
                                     style={{
-                                        height: (useDensePadding ? 33 : 53) * emptyRows,
+                                        height: (useDensePadding ? rowsPerPage* 7  : 53) * emptyRows,
                                     }}
                                 >
-                                    <TableCell colSpan={6} />
-                                </TableRow>
+                                    <StyledTableCell colSpan={6}/>
+                                </StyledTableRow>
                             )}
                         </TableBody>
                     </Table>

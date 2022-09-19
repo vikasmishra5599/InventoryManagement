@@ -2,10 +2,12 @@ package com.poc.InventoryManagement.service;
 
 import com.poc.InventoryManagement.dto.AuthUserResponse;
 import com.poc.InventoryManagement.entity.AuthUser;
+import com.poc.InventoryManagement.entity.ProductAssignment;
 import com.poc.InventoryManagement.entity.Role;
 import com.poc.InventoryManagement.exception.BadRequestException;
 import com.poc.InventoryManagement.exception.InvalidInputException;
 import com.poc.InventoryManagement.repositories.AuthUserRepository;
+import com.poc.InventoryManagement.repositories.ProductAssignmentRepository;
 import com.poc.InventoryManagement.repositories.RoleRepository;
 import com.poc.InventoryManagement.request.AddUserRequest;
 import com.poc.InventoryManagement.utils.Generators;
@@ -26,13 +28,16 @@ public class UserService {
 
     private AuthUserRepository authUserRepository;
 
+    private ProductAssignmentRepository productAssignmentRepository;
+
     private EmailService emailService;
 
     private RoleRepository roleRepository;
 
     @Autowired
-    public UserService(AuthUserRepository authUserRepository, EmailService emailService,RoleRepository roleRepository) {
+    public UserService(AuthUserRepository authUserRepository, ProductAssignmentRepository productAssignmentRepository, EmailService emailService,RoleRepository roleRepository) {
         this.authUserRepository = authUserRepository;
+        this.productAssignmentRepository = productAssignmentRepository;
         this.emailService = emailService;
         this.roleRepository = roleRepository;
     }
@@ -125,8 +130,8 @@ public class UserService {
     }
 
 
-    public List<AuthUserResponse> getAllAssignmentAuthUsers() {
-        List<AuthUser> userResponse = authUserRepository.findAllUsersWithoutLoggedInUser(getAuthUserDetails().id());
+    public List<AuthUserResponse> getAllAssignmentAuthUsers(Long id) {
+        List<AuthUser> userResponse = authUserRepository.findAllWithoutCurrentlyAssignedUser(productAssignmentRepository.findProductWithEndTimeNull(id).getAssignedTo());
         List<AuthUserResponse> response = userResponse.stream().map(this::authUserMapper).collect(Collectors.toList());
         return response;
     }

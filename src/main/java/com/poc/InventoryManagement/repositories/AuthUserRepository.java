@@ -21,5 +21,5 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long> {
     Optional<AuthUser> getAuthUserByResetKey(String resetPasswordKey);
 
     @Query("select AU from AuthUser AU where AU.id <> :id")
-    List<AuthUser> findAllUsersWithoutLoggedInUser(long id);
+    List<AuthUser> findAllWithoutCurrentlyAssignedUser(long id);
 }

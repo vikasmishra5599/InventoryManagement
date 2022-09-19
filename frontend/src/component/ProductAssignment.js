@@ -1,7 +1,9 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {
     Button,
-    Dialog, DialogActions, DialogContent,
+    Dialog,
+    DialogActions,
+    DialogContent,
     DialogTitle,
     FormControl,
     InputLabel,
@@ -14,14 +16,17 @@ import axios from "axios";
 import Alert from "../common/Alert";
 import Success from "../common/Success";
 import {getAuthHeader} from "../Utils/TokenUtils";
+import TableLoading from "../common/Table/TableLoading";
 
 const ProductAssignment = (props) => {
-    const {open, onClose, productId, users} = props;
+    const {open, onClose, productId} = props;
 
     const initialForm = {
         assignedTo: "",
         comments: "",
     };
+    const [assignmentUsers, setAssignmentUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [assignmentForm, setAssignmentFormForm] = useState(initialForm);
@@ -31,6 +36,7 @@ const ProductAssignment = (props) => {
     const handleInputChange = (e) => {
         setShowError(false);
         setShowSuccess(false);
+        setLoading(false);
         const fieldName = e.target.name
         const fieldValue = e.target.value
         setAssignmentFormForm({
@@ -43,15 +49,41 @@ const ProductAssignment = (props) => {
     const handleClose = () => {
         setShowError(false);
         setShowSuccess(false);
+        setLoading(false);
         onClose();
         setAssignmentFormForm(initialForm);
     };
+
+    useEffect(() => {
+        if (open) {
+            fetchAssignmentUsers();
+        }
+    }, [open])
+
+    const fetchAssignmentUsers = async () => {
+        setLoading(true);
+        setShowError(false);
+
+        await axios.get(`/ims/AuthUser/getAllAssignmentUsersDetails/${productId}`,
+            {headers: requestHeader})
+            .then((res) => {
+                setAssignmentUsers(res.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err)
+                setShowError(true);
+                setLoading(false);
+            });
+    }
+
     const handleAssignment = (e) => {
         e.preventDefault();
         onClose();
         setAssignmentFormForm(initialForm);
         setShowError(false);
         setShowSuccess(false);
+        setLoading(false);
         const inputRequest = JSON.stringify(assignmentForm)
 
         axios({
@@ -73,10 +105,12 @@ const ProductAssignment = (props) => {
                 setShowError(true)
             });
     };
+
     return (
         <div>
             {showError && <Alert/>}
-            {showSuccess && <Success/>}
+            {showSuccess && <Success message={"Product Assigned Successfully"}/>}
+            {<TableLoading renderLoading={loading}/>}
             <Dialog onClose={onClose} open={open}>
                 <DialogTitle style={{
                     color: "whitesmoke", backgroundColor: "#cf5419", display: "flex",
@@ -99,7 +133,7 @@ const ProductAssignment = (props) => {
                             value={assignmentForm.assignedTo}
                             label="Select Users"
                             onChange={handleInputChange}
-                        >{users && users.map((user,index) => (
+                        >{assignmentUsers && assignmentUsers.map((user,index) => (
                             <MenuItem key={index+1} value={user.id}>{`${user.firstName} ${user.lastName} (${user.email})`}</MenuItem>
                         ))}
                         </Select>

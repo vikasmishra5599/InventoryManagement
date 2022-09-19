@@ -52,10 +52,10 @@ public class AuthUserController {
         return new ResponseEntity<>(savedUser,HttpStatus.OK);
     }
 
-    @GetMapping("/getAllAssignmentUsersDetails")
+    @GetMapping("/getAllAssignmentUsersDetails/{id}")
     @AuthUserRole
-    public ResponseEntity<List<AuthUserResponse>> getAllAssignmentUsers(){
-        return new ResponseEntity<>(userService.getAllAssignmentAuthUsers(), HttpStatus.OK);
+    public ResponseEntity<List<AuthUserResponse>> getAllAssignmentUsers(@PathVariable Long id){
+        return new ResponseEntity<>(userService.getAllAssignmentAuthUsers(id), HttpStatus.OK);
     }
 
 }

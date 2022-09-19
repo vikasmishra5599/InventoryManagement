@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Success = ({ children, alertClass }) => {
+const Success = ({ message }) => {
     return (
         <div style={{
             backgroundColor: '#f1f7e9',
@@ -8,7 +8,7 @@ const Success = ({ children, alertClass }) => {
             fill: '7bc144',
             padding: '1rem',
         }} data-testid="success">
-            {children || 'Data added successfully.'}
+            {message || 'Data added successfully.'}
         </div>
     );
 };

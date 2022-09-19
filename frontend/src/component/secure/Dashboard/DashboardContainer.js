@@ -10,25 +10,25 @@ import Tooltip from "@mui/material/Tooltip";
 import ProductAuditDialog from "./ProductAudit/ProductAuditDialog";
 import {connect} from "react-redux";
 
-function DashboardContainer (props) {
+function DashboardContainer(props) {
 
     const {profile} = props;
     const [tableData, setTableData] = useState([]);
-    const [assignmentUsers, setAssignmentUsers] = useState([]);
     const [showError, setShowError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = React.useState(false);
-    const [assignProductId,setAssignProductId] = useState(null);
+    const [assignProductId, setAssignProductId] = useState(null);
     const [auditOpen, setAuditOpen] = React.useState(false);
-    const [auditProductId,setAuditProductId] = useState(null);
+    const [auditProductId, setAuditProductId] = useState(null);
     const isManager = profile.roles?.includes("ROLE_MANAGER");
 
-    const handleClose=()=>{
+    const handleClose = () => {
         setOpen(false);
         setAssignProductId(null);
+        fetchListData();
     }
 
-    const handleAuditClose=()=>{
+    const handleAuditClose = () => {
         setAuditOpen(false);
         setAuditProductId(null);
     }
@@ -41,12 +41,12 @@ function DashboardContainer (props) {
 
     const requestHeader = getAuthHeader({'Accept-Type': 'application/json'});
 
-    const fetchListData = async  () => {
+    const fetchListData = async () => {
         setLoading(true);
         setShowError(false);
 
         await axios.get("/ims/dashboard/",
-            {headers: requestHeader })
+            {headers: requestHeader})
             .then((res) => {
                 setTableData(res.data);
                 setLoading(false);
@@ -58,31 +58,8 @@ function DashboardContainer (props) {
             });
     }
 
-    useEffect(() => {
-        if(open) {
-            fetchAssignmentUsers();
-        }
-    }, [open])
-
-    const fetchAssignmentUsers = async () => {
-        setLoading(true);
-        setShowError(false);
-
-        await axios.get("/ims/AuthUser/getAllAssignmentUsersDetails",
-            {headers: requestHeader})
-            .then((res) => {
-                setAssignmentUsers(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log(err)
-                setShowError(true);
-                setLoading(false);
-            });
-    }
-
     const defaultSort = "name";
-    const columns =[
+    const columnsArr = [
         {
             id: 'name',
             numeric: false,
@@ -132,11 +109,20 @@ function DashboardContainer (props) {
             label: 'Status',
         },
     ];
-      const title="Dashboard";
-      const customRowsPerPage = [10,15];
-      const rowSelectCheckBox = false;
-      const  useDensePadding = true;
-      const tableWidth = 1200;
+
+    const columns = columnsArr.slice();
+    const columnsValue = isManager ? columns.push({
+        id: 'assignedTo',
+        numeric: false,
+        disablePadding: true,
+        label: 'Assigned To',
+    }) : columns;
+
+    const title = "Dashboard";
+    const customRowsPerPage = [10, 15];
+    const rowSelectCheckBox = false;
+    const useDensePadding = true;
+    const tableWidth = 1200;
     const rowActions = [
         {
             icon: <Tooltip title="Assign" placement="top">
@@ -173,13 +159,13 @@ function DashboardContainer (props) {
             rowActions={isManager ? rowActions : []}
             isLoading={loading}
         />
-        <ProductAssignment users={assignmentUsers} open={open} onClose={handleClose} productId={assignProductId}/>
-        <ProductAuditDialog isOpen={auditOpen} onClose={handleAuditClose}  productId={auditProductId}/>
+        <ProductAssignment open={open} onClose={handleClose} productId={assignProductId}/>
+        <ProductAuditDialog isOpen={auditOpen} onClose={handleAuditClose} productId={auditProductId}/>
     </>
 }
 
-const mapStateToProps=(store)=>({
+const mapStateToProps = (store) => ({
     profile: store.UserProfile.profile,
 })
 
-export default connect(mapStateToProps,null)(DashboardContainer);
+export default connect(mapStateToProps, null)(DashboardContainer);

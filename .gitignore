@@ -10,3 +10,7 @@
 /frontend/node/npm.cmd
 /frontend/node/npx
 /frontend/node/npm
+/terraform/.terraform/
+/terraform/.terraform.lock.hcl
+/terraform/terraform.tfstate
+/terraform/terraform.tfstate.backup

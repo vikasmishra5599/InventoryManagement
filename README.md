@@ -1,134 +1,221 @@
 # InventoryManagement
 
-1. java with spring boot
-2. React 
-3. In memory DB H2 (Will be migrating to Azure Postgresql)
-4. Docker
-5. Kubernetes
-6. Azure CLI
+This is an inventory management application intended to cater day to day inventory related operation of organisation.
 
 
-## Frontend
-From frontend application, 
+## Infrastructure Setup Guide
+______________________________
 
-`npm install`
+### Prerequisite
 
-`npm run start`
+Have following apps available on your system:
 
-
-Go to browser,   [http://localhost:3000/ims/ ](http://localhost:3000/ims/)
-
-
-
-## Frontend + Backend
-
-mvn clean install
-
-mvn spring-boot:run
-
-Go to browser, [http://localhost:8081/ims/](http://localhost:8081/ims/)
+1. Azure Subscription
+2. Azure CLI (_brew install azure-cli_)
+3. Terraform (_brew install hashicorp/tap/terraform_)
 
 
-## Run (Inside DOCKER container locally)
+### Instructions
 
-### Build
+Step 1: From Azure account, get Azure subscription (subscriptionId)
 
-`docker build . --tag ims-app:1.0`
+Step 2: Create service principal from Azure AD, either from portal or Azure CLI (replace subscriptionId from previous step)
 
-### Run
+    az login
+  
+    az account set -s subscriptionId
+   
+    az account show
 
-`docker run -p 8081:8081 ims-app:1.0`
+    az ad sp create-for-rbac --name inventoryserviceprincipal --role Contributor --scopes /subscriptions/subscriptionId
 
-#### Other useful command
-
-docker image ls
-
-
-### Database
-
-Azure database for postgresql services used. Details available in application.properties
+   Save appId, tenant, password information from output for further use. This service principal will be used while deployment or login where appId will be username and secret will be password
 
 
-### Deploy via maven
+Step 3: From inside terraform folder, replace the values in your terraform.tfvars file with your appId and password
 
-From terminal, have azure cli installed
+Step 4: Run following commands
 
-` az login `  
+    terraform init
 
-`mvn package azure-webapp:deploy`
+    terraform validate
 
+    terraform plan
 
-Check app: [http://alle-inventory-management-app.azurewebsites.net/ims/](http://alle-inventory-management-app.azurewebsites.net/ims/)
+    terraform apply -auto-approve
 
 
 
-### Build and Push Image to Azure container registry
+   <span style="color:green;">Infrastructure is ready!!</span>
+
+
+
+## Development Guide
+_____________________
+
+### Prerequisite
+
+1. Java 17
+2. Postgresql
+3. Node, Npm
+4. Maven
+
+### Instructions
+
+#### <span style="color:orange;">Frontend</span>
+
+From inside frontend folder,
+
+    npm install
+
+    npm run start
+
+ Go to browser,   [http://localhost:3000/ims/ ](http://localhost:3000/ims/)
+
+#### <span style="color:orange;">Frontend + Backend</span>
+
+    mvn clean install
+
+    mvn spring-boot:run
+
+ Go to browser, [http://localhost:8081/ims/](http://localhost:8081/ims/)
+
+#### <span style="color:orange;">Database</span>
+
+Azure database for postgresql services used. For connection details, check application.properties
+
+
+
+## Deployment Guide
+________________________
+
+### Prerequisite
+
+1. Azure Subscription
+2. Configured Azure CLI (_brew install azure-cli_)
+3. Maven
+4. Docker (_brew install --cask docker_)
+5. kubectl (_brew install kubectl_)
+
+
+### Instructions
+
+This stage will be taken care of by Gitlab CI/CD or Azure Devops pipeline(currently both are not working).
+
+In order to deploy manually, follow below steps:
+
+Step 1: Build Docker Image
+
+#### Build and Run Locally
+
+    mvn clean install
+
+    docker build . --tag inventorymanagement-app:1.0
+
+    docker image ls
+
+    docker run -p 8081:8081 inventorymanagement-app:1.0
+
+
+#### Build and Push to Azure Container Registry(ACR)
 
 To push an image to azure container registry, we need to login. There are 2 ways to login
 
+##### Approach 1 :
 
-Approach 1
+      az login     (In this approach we have to manually login)
 
-```
-az login
+      az login --service-principal -u <applicationid> -p <service principal secret value> --tenant <tenantId> ( Recommended approach, specially when deploying via pipeline)
 
-or 
+      az acr build . -t imscontainerregistryallegion.azurecr.io/inventorymanagement-app:{{.Run.ID}} -r imscontainerregistryallegion 
 
-az login -u <username> -p <password>
- 
-or  login with servcie principal 
+   We might have to change/update this command,  as per azure container registry name. Since globally container registry is unique. It has to be changed while infra deployment
 
-az login --service-principal -u <applicationid> -p <service principal secret value> --tenant <tenantId>
+     az acr build . -t imscontainerregistryallegion.azurecr.io/inventorymanagement-app -r imscontainerregistryallegion (To deploy with latest tag)
 
 
-az acr build -t imscr.azurecr.io/inventory-management:{{.Run.ID}} -r imscr .
+##### Approach 2: Using Docker, as ACR is docker 2.0
 
-or
+   login with service principal appId and secret as username and password respectively. 
 
-az acr build -t imscr.azurecr.io/inventory-management -r imscr .
-```
- 
-Approach 2: ACR is docker 2.0
-```
- login with service principal in docker
+    docker login imscontainerregistryallegion.azurecr.io -u 41bfc821-f16d-4d35-8c6e-c8b61dbb37a6 -p fHt8Q~sWrmWj5xFwDElYLdzPEbE7kJtHXes0gdc_
 
-docker login imscr.azurecr.io -u imscr -p 26LF=ORrMXkMA0EMsMvtNfAByFaBE8gX
+    docker build . -t imscontainerregistryallegion.azurecr.io/inventorymanagement-app
 
-docker build . -t imscr.azurecr.io/inventory-management:latest
-
-docker push imscr.azurecr.io/inventory-management:latest
+    docker push imscontainerregistryallegion.azurecr.io/inventorymanagement-app:latest
 
 
-In username & password, simply use access key or service principal,
+Step 3: Deploy Image from ACR into Azure Kubernetes Service(AKS)
 
-For service principal, username will be applicationId && password will be secret value of service principal
+    az login --service-principal -u 41bfc821-f16d-4d35-8c6e-c8b61dbb37a6 -p fHt8Q~sWrmWj5xFwDElYLdzPEbE7kJtHXes0gdc_ --tenant 9d7e183d-ddb2-438b-a6da-4b92eb265c57
 
-```
+    az aks get-credentials -n imsappcluster -g ims-app-resource-group
 
+    kubectl apply -f deploy/deployment.yml -f deploy/service.yml
 
-### Deploy image from ACR to AKS(Azure kubernetes service)
+    kubectl get deployment
+     
+    kubectl get pods 
 
-In order to create cluster, its a one time activity:
-az aks create -n imsappcluster -g VSR --node-count 1 --generate-ssh-keys --attach-acr imscr
+    kubectl get services (Copy externalIp and Portno from ouput)
 
-
-
-az aks get-credentials -n imsappcluster -g VSR
-
-k apply -f deploy/deployment.yml -f deploy/service.yml
-
-k get pods _Verify pods are running_
-
-k get services _Copy externalIp and Portno_ 
-
-Eg:  http://52.186.33.163:8081/ims/
+ Eg: Check url for application http://<ExternalIP>:<PORT>/ims/
+     
+    http://52.186.33.163:8081/ims/
 
 
+Step 4: In case we want to deploy directly as Azure App Service, without terraform. 
 
+####  Pre-requisites
+  
+  1. Java
+  2. Maven
+  3. Azure Subscription (get subscriptionid and Resource group name)
+  4. Azure CLI
 
-**Note**: Just FYI, we have used below command to configure azure-webapp-maven-plugin in pom.xml
+  ```
+    Replace subscriptionId and resourcegroup, and provide unique custom app name
+    
+      <plugin> 
+        <groupId>com.microsoft.azure</groupId>  
+        <artifactId>azure-webapp-maven-plugin</artifactId>  
+        <version>2.6.1</version>  
+        <configuration> 
+          <schemaVersion>v2</schemaVersion>  
+          <subscriptionId>f8a2e0ca-c9cb-4377-a580-096a572355a4</subscriptionId>
+          <resourceGroup>practice</resourceGroup>
+          <appName>alle-inventory-management-app1234</appName>
+          <pricingTier>B2</pricingTier>  
+          <region>eastus</region>  
+          <runtime> 
+            <os>Linux</os>  
+            <javaVersion>Java 17</javaVersion>  
+            <webContainer>Java SE</webContainer> 
+          </runtime>  
+          <deployment> 
+            <resources> 
+              <resource> 
+                <directory>${project.basedir}/target</directory>  
+                <includes> 
+                  <include>*.jar</include> 
+                </includes> 
+              </resource> 
+            </resources> 
+          </deployment> 
+        </configuration> 
+      </plugin> 
+   ```
+ or
+       
+    mvn com.microsoft.azure:azure-webapp-maven-plugin:2.6.1:config
 
-` mvn com.microsoft.azure:azure-webapp-maven-plugin:2.6.1:config `
+ Both approach does same, with difference later will require us to provide detail.
+   
+ For deployment,  
+  
+    az login (can also login via service principal)
 
-Refer : [https://docs.microsoft.com/en-us/azure/app-service/quickstart-java?tabs=tomcat&pivots=platform-linux-development-environment-maven](https://docs.microsoft.com/en-us/azure/app-service/quickstart-java?tabs=tomcat&pivots=platform-linux-development-environment-maven)
+    mvn package azure-webapp:deploy
 
+Now, check https://<appname>.azurewebsites.net/ims/
+   

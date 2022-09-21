@@ -27,6 +27,7 @@ docker-build-push-gitlab-ci:
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
+    - echo "Build docker image and push to gitlab started"
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
         tag=""
@@ -54,10 +55,7 @@ docker-build-push-acr:
   before_script:
     - docker login imscr.azurecr.io -u imscr -p avJvQKz03w5N1yw/QQBbgM9unqZsRk0J
   script:
-    - echo $CI_COMMIT_REF_SLUG
-    - echo $CI_JOB_IMAGE
-    - echo $CI_COMMIT_SHA
-    - echo $CI_COMMIT_TAG
+    - echo "Docker build and push image to ACR"
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
         tag=""
@@ -76,30 +74,6 @@ docker-build-push-acr:
         - Dockerfile
 
 
-#
-#push-image:
-#  image: mcr.microsoft.com/azure-cli:latest
-#  stage: publish-acr
-#  environment: production
-#  needs:
-#    - job: docker-build
-#  before_script:
-#    - az login --service-principal -u b27121f0-8d8b-4799-bd52-c792ffcaf2d8 -p .a38Q~jME52A~c~wmixd8xBf-Z5xgqyAr-cq8aDs --tenant 9d7e183d-ddb2-438b-a6da-4b92eb265c57
-#  script:
-#    - echo "Pushing application to ACR"
-#    - az account show
-#    - echo $CI_REGISTRY
-#    - echo "$CI_REGISTRY_USER"
-#    - |
-#      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-#        tag=""
-#        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
-#      else
-#        tag=":$CI_COMMIT_REF_SLUG"
-#        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
-#      fi
-#    - az acr import -n myinventorycontainerregistry --source registry.gitlab.com/internal_team/inventorymanagement:latest --image inventorymanagement:v1 --username "$CI_REGISTRY_USER" --password "$CI_REGISTRY_PASSWORD"
-#    - echo "successfully logged in to container"
 
 #
 #deploy-k8s:
@@ -122,7 +96,7 @@ docker-build-push-acr:
 
 #For reference https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Maven.gitlab-ci.yml
 
-#https://docs.gitlab.com/ee/ci/examples/
+
 
 
 

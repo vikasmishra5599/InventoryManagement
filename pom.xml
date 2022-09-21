@@ -199,9 +199,9 @@
         <version>2.6.1</version>  
         <configuration> 
           <schemaVersion>v2</schemaVersion>  
-          <subscriptionId>f1efb505-9c3d-493f-9063-29a29f8ff2e3</subscriptionId>
-          <resourceGroup>VSR</resourceGroup>
-          <appName>alle-inventory-management-app</appName>
+          <subscriptionId>f8a2e0ca-c9cb-4377-a580-096a572355a4</subscriptionId>
+          <resourceGroup>practice</resourceGroup>
+          <appName>alle-inventory-management-app123</appName>
           <pricingTier>B2</pricingTier>  
           <region>eastus</region>  
           <runtime> 

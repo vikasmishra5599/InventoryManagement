@@ -10,7 +10,7 @@ variable "resource_group_location" {
 
 #Postgresql variables
 variable "postgresql_server_name" {
-  default = "ims-postgres-server"
+  default = "allegion-postgres-server"
 }
 
 variable "postgresql_server_version" {
